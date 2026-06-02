@@ -1,4 +1,4 @@
-# 🛒 E-Commerce RESTful API
+# 🛒 E-Commerce API
 
 A robust, secure, and scalable RESTful API backend for an e-commerce platform built with Laravel. This API handles user authentication, product catalog management, order processing, and payment records with absolute database integrity.
 
