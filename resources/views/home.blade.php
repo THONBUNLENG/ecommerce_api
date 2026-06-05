@@ -396,12 +396,14 @@ body {
 .section-icon {
     width: 100%;
     height: 100%;
-    max-width: 380px;
+    max-width: 360px;
     aspect-ratio: 3/4;
     object-fit: cover;
     object-position: center;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    border: 2px solid rgba(255,255,255,0.9);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    background: linear-gradient(135deg, #f5f3f0 0%, #ede9e2 100%);
     transition: transform 0.35s cubic-bezier(.25,.46,.45,.94), box-shadow 0.35s ease;
 }
 
@@ -1274,206 +1276,336 @@ body {
             </div>
         </div>
 
- {{-- ── Popular Products ── --}}
-<div class="featured-collection mt-100 overflow-hidden">
-    <div class="collection-tab-inner">
-        <div class="container">
-            <div class="section-header text-center">
-        <div class="models-heading text-center">
-    <span class="models-label">Professional Models</span>
-
-    <h3 class="models-title">
-        Our Models
-    </h3>
-
-    <div class="models-divider">
-        <span></span>
-        <i class="fas fa-star"></i>
-        <span></span>
-    </div>
-
-    <p class="models-description">
-        Meet our professional models showcasing elegance,
-        confidence and timeless fashion.
-    </p>
-</div>
-                <div class="section-icons-slider" id="galleryScroll">
-                    <button class="gallery-nav gallery-prev" aria-label="Scroll Left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <div class="section-icons">
-                        @foreach ($trustedImages as $image)
-                        <div class="section-icon-wrapper">
-                            <a href="{{ asset('img/trusted/' . $image) }}" class="gallery-lightbox" data-gallery="featured-gallery">
-                                <img class="section-icon"
-                                     src="{{ asset('img/trusted/' . $image) }}"
-                                     alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
-                            </a>
+        {{-- ── Our Models ── --}}
+        <div class="featured-collection mt-100 overflow-hidden">
+            <div class="collection-tab-inner">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <div class="models-heading text-center">
+                            <span class="models-label">Professional Models</span>
+                            <h3 class="models-title">Our Models</h3>
+                            <div class="models-divider">
+                                <span></span>
+                                <i class="fas fa-star"></i>
+                                <span></span>
+                            </div>
+                            <p class="models-description">
+                                Meet our professional models showcasing elegance,
+                                confidence and timeless fashion.
+                            </p>
                         </div>
-                        @endforeach
                     </div>
-                    <button class="gallery-nav gallery-next" aria-label="Scroll Right">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-<h2 class="section-heading">Popular Products</h2>
-            </div>
-            <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const gallerySlider = document.querySelector('.section-icons');
-                const prevBtn = document.querySelector('.gallery-prev');
-                const nextBtn = document.querySelector('.gallery-next');
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('modalImage');
-                const modalCaption = document.getElementById('modalCaption');
-                const closeBtn = document.getElementById('modalClose');
-                let autoScrollTimer = null;
-                let isHovered = false;
-
-                function scrollByOne() {
-                    if (!gallerySlider || isHovered) return;
-                    const itemWidth = gallerySlider.querySelector('.section-icon-wrapper')?.offsetWidth + 20 || 300;
-                    const maxScroll = gallerySlider.scrollWidth - gallerySlider.clientWidth;
-                    if (gallerySlider.scrollLeft >= maxScroll - itemWidth) {
-                        gallerySlider.scrollTo({ left: 0, behavior: 'smooth' });
-                    } else {
-                        gallerySlider.scrollBy({ left: itemWidth, behavior: 'smooth' });
-                    }
-                }
-
-                function startAutoScroll() {
-                    autoScrollTimer = setInterval(scrollByOne, 4000);
-                }
-
-                if (gallerySlider) {
-                    gallerySlider.addEventListener('mouseenter', () => { isHovered = true; });
-                    gallerySlider.addEventListener('mouseleave', () => { isHovered = false; });
-                    startAutoScroll();
-
-                    if (prevBtn) {
-                        prevBtn.addEventListener('click', () => {
-                            const itemWidth = gallerySlider.querySelector('.section-icon-wrapper')?.offsetWidth + 20 || 300;
-                            gallerySlider.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-                        });
-                    }
-
-                    if (nextBtn) {
-                        nextBtn.addEventListener('click', () => {
-                            const itemWidth = gallerySlider.querySelector('.section-icon-wrapper')?.offsetWidth + 20 || 300;
-                            gallerySlider.scrollBy({ left: itemWidth, behavior: 'smooth' });
-                        });
-                    }
-                }
-
-                document.querySelectorAll('.gallery-lightbox').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        modalImg.src = this.getAttribute('href');
-                        modalCaption.textContent = this.querySelector('img').getAttribute('alt').replace(/([A-Z])/g, ' $1').trim();
-                        modal.style.display = 'flex';
-                        document.body.style.overflow = 'hidden';
-                    });
-                });
-
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = '';
-                    });
-                }
-
-                if (modal) {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            modal.style.display = 'none';
-                            document.body.style.overflow = '';
-                        }
-                    });
-                }
-            });
-            </script>
-            <div class="row">
-                @foreach ($products as $pro)
-                <div class="col-lg-3 col-md-6 col-6" data-aos="fade-up" data-aos-duration="700">
-                    <div class="product-card" data-product-id="{{ $pro->id }}">
-
-                        <div class="product-card-img">
-                            {{-- Point to specific product show page --}}
-                            <a class="hover-switch" href="{{ route('products.show', $pro->id) }}">
-                                {{-- Fallback to main image if secondary doesn't exist in database --}}
-                                <img class="secondary-img"
-                                     src="{{ asset('/storage/' . ($pro->secondary_image_url ?? $pro->image_url)) }}"
-                                     alt="{{ $pro->name }}">
-                                <img class="primary-img"
-                                     src="{{ asset('/storage/'.$pro->image_url) }}"
-                                     alt="{{ $pro->name }}">
-                            </a>
-
-                            <div class="product-badge">
-                                <span class="badge-label badge-new">Featured</span>
+                    <div class="section-icons-slider" id="galleryScroll">
+                        <button class="gallery-nav gallery-prev" aria-label="Scroll Left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="section-icons">
+                            @foreach ($trustedImages as $image)
+                            <div class="section-icon-wrapper">
+                                <a href="{{ asset('img/trusted/' . $image) }}" class="gallery-lightbox" data-gallery="featured-gallery">
+                                    <img class="section-icon"
+                                         src="{{ asset('img/trusted/' . $image) }}"
+                                         alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                                </a>
                             </div>
-                         Action Triggers
-                            <div class="product-card-action product-card-action-2 justify-content-center">
-                                <button class="action-card action-quickview"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#quickview-modal"
-                                        data-product-id="{{ $pro->id }}"
-                                        aria-label="Quick view">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="https://scontent.fpnh19-1.fna.fbcdn.net/v/t39.30808-6/557741691_122176398464481161_7039324981622306173_n.jpg?stp=cp6_dst-jpg_s960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=PL1rCRemzXoQ7kNvwEUtauP&_nc_oc=AdqqnUpqWJDUINkWL83irXzfMTHUehAS2guj9nrHGXRov_BlLkTynCy55nU6RS_Lln8&_nc_zt=23&_nc_ht=scontent.fpnh19-1.fna&_nc_gid=HOZfQsNyqrpzDqgVEvIRsw&_nc_ss=7b2a8&oh=00_Af9VF8-oS4XA8sSum4OVypY7CgSOiXJs9sJC3jNJpakUbw&oe=6A2705B9">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.5"/>
-                                    </svg>
-                                </button>
-
-                                <button class="action-card action-wishlist"
-                                        data-product-id="{{ $pro->id }}"
-                                        aria-label="Add to Wishlist">
-                                    <svg width="20" height="18" viewBox="0 0 26 22" fill="none" xmlns="https://scontent.fpnh19-1.fna.fbcdn.net/v/t39.30808-6/608662649_122186976320481161_2039172089804274684_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=oxIU-v8FTAkQ7kNvwFk9EhW&_nc_oc=AdpTESYomYrlMk9LnuWBDSg49_sIVsOz-hCZ40fSNlL1Lqzywho3OCcxSJPpabYZhNM&_nc_zt=23&_nc_ht=scontent.fpnh19-1.fna&_nc_gid=-PjkmlMHYEGascZQOh2VYQ&_nc_ss=7b2a8&oh=00_Af-hBo4zXA6cNtFguYX3SINz1a0WwP3WLt0evfjmDmgjnA&oe=6A270D4C">
-                                        <path d="M6.96429 0C3.12305 0 0 3.10686 0 6.84843C0 8.15388 0.602121 9.28455 1.16071 10.1014C1.71931 10.9181 2.29241 11.4425 2.29241 11.4425L12.3326 21.3439L13 22.0002L13.6674 21.3439L23.7076 11.4425C23.7076 11.4425 26 9.45576 26 6.84843C26 3.10686 22.877 0 19.0357 0C15.8474 0 13.7944 1.88702 13 2.68241C12.2056 1.88702 10.1526 0 6.96429 0ZM6.96429 1.82638C9.73912 1.82638 12.3036 4.48008 12.3036 4.48008L13 5.25051L13.6964 4.48008C13.6964 4.48008 16.2609 1.82638 19.0357 1.82638C21.8613 1.82638 24.1429 4.10557 24.1429 6.84843C24.1429 8.25732 22.4018 10.1584 22.4018 10.1584L13 19.4036L3.59821 10.1584C3.59821 10.1584 3.14844 9.73397 2.69866 9.07411C2.24888 8.41426 1.85714 7.55466 1.85714 6.84843C1.85714 4.10557 4.13867 1.82638 6.96429 1.82638Z" fill="#fff"/>
-                                    </svg>
-                                </button>
-
-                                <button class="action-card action-addtocart"
-                                        data-product-id="{{ $pro->id }}"
-                                        aria-label="Add to Cart">
-                                    <svg width="18" height="20" viewBox="0 0 24 26" fill="none" xmlns="https://scontent.fpnh19-1.fna.fbcdn.net/v/t39.30808-6/584120694_122181395726481161_5788273367915787290_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=y-R6E5EaIPUQ7kNvwH-0mls&_nc_oc=AdpDTMPzEEYFDB0ulLRoi1LMBSZ2ptcbTRbDbBvvjAnDnf8b2pseWTWVS-pMmNzOSu4&_nc_zt=23&_nc_ht=scontent.fpnh19-1.fna&_nc_gid=lZRryZtdilmDVSe0wdxaAg&_nc_ss=7b2a8&oh=00_Af8PVWSkKiS4AFOcrSn9-krerK2wSgxquTOoWFOfOY3g-w&oe=6A27112B">
-                                        <path d="M12 0C9.25391 0 7 2.25391 7 5V6H2.0625L2 6.9375L1 24.9375L0.9375 26H23.0625L23 24.9375L22 6.9375L21.9375 6H17V5C17 2.25391 14.7461 0 12 0ZM12 2C13.6563 2 15 3.34375 15 5V6H9V5C9 3.34375 10.3438 2 12 2ZM3.9375 8H7V11H9V8H15V11H17V8H20.0625L20.9375 24H3.0625L3.9375 8Z" fill="#fff"/>
-                                    </svg>
-                                </button>
-                            </div>
+                            @endforeach
                         </div>
-
-                        <div class="product-card-details">
-                            {{-- Color Variant Selection swatches --}}
-                            <ul class="color-lists list-unstyled d-flex align-items-center mb-2">
-                                <li>
-                                    <span class="color-swatch swatch-black active" data-color="black"></span>
-                                </li>
-                            </ul>
-
-                            <h3 class="product-card-title">
-                                <a href="{{ route('products.show', $pro->id) }}">{{ $pro->name }}</a>
-                            </h3>
-
-                            <div class="product-card-price">
-                                <span class="card-price-regular">${{ number_format($pro->price, 2) }}</span>
-                            </div>
-                        </div>
-
+                        <button class="gallery-nav gallery-next" aria-label="Scroll Right">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                @endforeach
-            </div>
-            <div class="view-all text-center" data-aos="fade-up" data-aos-duration="700">
-                <a class="btn-primary" href="{{ route('view-products') }}">View All Products</a>
             </div>
         </div>
-    </div>
-</div>
+
+        {{-- ── Popular Products ── --}}
+        <div class="popular-products-section overflow-hidden">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-heading">Popular Products</h2>
+                </div>
+                <div class="row g-4">
+                    @forelse ($products as $pro)
+                    <div class="col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-duration="700">
+                        <div class="product-card-fashion">
+
+                            <div class="product-card-fashion-img">
+                                <a href="{{ route('products.show', $pro->id) }}">
+                                    <img src="{{ asset('img/people/' . basename($pro->image_url)) }}"
+                                         alt="{{ $pro->name }}">
+                                </a>
+
+                                <div class="product-card-fashion-actions">
+                                    <button class="action-circle action-wishlist-fashion"
+                                            data-product-id="{{ $pro->id }}" aria-label="Add to Wishlist">
+                                        <svg width="18" height="16" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6.96429 0C3.12305 0 0 3.10686 0 6.84843C0 8.15388 0.602121 9.28455 1.16071 10.1014C1.71931 10.9181 2.29241 11.4425 2.29241 11.4425L12.3326 21.3439L13 22.0002L13.6674 21.3439L23.7076 11.4425C23.7076 11.4425 26 9.45576 26 6.84843C26 3.10686 22.877 0 19.0357 0C15.8474 0 13.7944 1.88702 13 2.68241C12.2056 1.88702 10.1526 0 6.96429 0ZM6.96429 1.82638C9.73912 1.82638 12.3036 4.48008 12.3036 4.48008L13 5.25051L13.6964 4.48008C13.6964 4.48008 16.2609 1.82638 19.0357 1.82638C21.8613 1.82638 24.1429 4.10557 24.1429 6.84843C24.1429 8.25732 22.4018 10.1584 22.4018 10.1584L13 19.4036L3.59821 10.1584C3.59821 10.1584 3.14844 9.73397 2.69866 9.07411C2.24888 8.41426 1.85714 7.55466 1.85714 6.84843C1.85714 4.10557 4.13867 1.82638 6.96429 1.82638Z" fill="#0f0f0f"/>
+                                        </svg>
+                                    </button>
+
+                                    <button class="action-circle action-quickview-fashion"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#quickview-modal"
+                                            data-product-id="{{ $pro->id }}"
+                                            aria-label="Quick View">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="1.5"/>
+                                        </svg>
+                                    </button>
+
+                                    <button class="action-circle action-cart-fashion"
+                                            data-product-id="{{ $pro->id }}"
+                                            aria-label="Add to Cart">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="3" y1="6" x2="21" y2="6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M16 10a4 4 0 0 1-8 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="product-card-fashion-badge">
+                                    @if($pro->is_latest_drop)
+                                        <span class="badge-new">New</span>
+                                    @else
+                                        <span class="badge-featured">Featured</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="product-card-fashion-body">
+                                <p class="product-card-fashion-category">Women / Dresses</p>
+                                <h3 class="product-card-fashion-title">
+                                    <a href="{{ route('products.show', $pro->id) }}">{{ $pro->name }}</a>
+                                </h3>
+                                <div class="product-card-fashion-price">
+                                    <span class="price-current">${{ number_format($pro->price, 2) }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-12 text-center py-5">
+                        <p>No popular products available.</p>
+                    </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <style>
+        .popular-products-section {
+            padding: 100px 0;
+            background: #fafaf8;
+        }
+        .popular-products-section .section-heading {
+            font-family: var(--ff-display);
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+        }
+        .popular-products-section .section-heading::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--tertiary), transparent);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+        .product-card-fashion {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            height: 100%;
+        }
+        .product-card-fashion:hover {
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+        }
+        .product-card-fashion-img {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 3 / 4;
+            background: linear-gradient(180deg, rgba(15,15,15,0.02) 0%, rgba(15,15,15,0.08) 100%);
+        }
+        .product-card-fashion-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            transition: transform 0.8s cubic-bezier(.25, .46, .45, .94);
+        }
+        .product-card-fashion:hover .product-card-fashion-img img {
+            transform: scale(1.08);
+        }
+        .product-card-fashion-actions {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+            transition: transform 0.45s cubic-bezier(.25, .46, .45, .94);
+        }
+        .product-card-fashion:hover .product-card-fashion-actions {
+            transform: translateX(-50%) translateY(0);
+        }
+        .action-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            color: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+            transition: var(--transition);
+        }
+        .action-circle:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(212,175,55,0.35);
+        }
+        .product-card-fashion-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 3;
+        }
+        .product-card-fashion-badge .badge-new,
+        .product-card-fashion-badge .badge-featured {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            backdrop-filter: blur(12px);
+        }
+        .badge-new {
+            background: rgba(212,175,55,0.92);
+            color: var(--primary);
+            border: 1px solid rgba(212,175,55,0.4);
+        }
+        .badge-featured {
+            background: rgba(15,15,15,0.85);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .product-card-fashion-body {
+            padding: 22px 20px 24px;
+            background: #fff;
+        }
+        .product-card-fashion-category {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+        .product-card-fashion-title {
+            font-family: var(--ff-display);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 12px;
+            line-height: 1.35;
+        }
+        .product-card-fashion-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s;
+        }
+        .product-card-fashion-title a:hover {
+            color: var(--secondary);
+        }
+        .product-card-fashion-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .price-current {
+            font-weight: 700;
+        }
+        @media (max-width: 1024px) {
+            .popular-products-section {
+                padding: 80px 0;
+            }
+            .product-card-fashion-body {
+                padding: 18px 16px 20px;
+            }
+            .product-card-fashion-title {
+                font-size: 16px;
+            }
+        }
+        @media (max-width: 768px) {
+            .popular-products-section {
+                padding: 60px 0;
+            }
+            .popular-products-section .section-heading {
+                font-size: 38px;
+            }
+            .product-card-fashion-body {
+                padding: 16px;
+            }
+            .product-card-fashion-title {
+                font-size: 15px;
+            }
+            .product-card-fashion-price {
+                font-size: 14px;
+            }
+            .product-card-fashion-actions {
+                transform: translateX(-50%) translateY(0);
+                bottom: 12px;
+            }
+            .action-circle {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        @media (max-width: 576px) {
+            .popular-products-section .section-heading {
+                font-size: 28px;
+            }
+            .product-card-fashion-img {
+                aspect-ratio: 2/3;
+            }
+            .product-card-fashion-badge {
+                top: 10px;
+                left: 10px;
+            }
+            .product-card-fashion-body {
+                padding: 14px;
+            }
+            .product-card-fashion-title {
+                font-size: 14px;
+            }
+            .product-card-fashion-price {
+                font-size: 13px;
+            }
+        }
+        </style>
         {{-- ── Promotional Banners ── --}}
         <div class="banner-section mt-100 overflow-hidden">
             <div class="banner-section-inner">
@@ -1907,6 +2039,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { passive: true });
 
     });
+
+    const gallery = document.getElementById('galleryGallery');
+    if (gallery) {
+        const itemSelector = '.gallery-item';
+        const prev2 = document.querySelector('.gallery-prev');
+        const next2 = document.querySelector('.gallery-next');
+        const itemWidth = () => gallery.querySelector(itemSelector)?.getBoundingClientRect().width || 320;
+
+        const safeScroll = (behavior, left) => {
+            if (!gallery) return;
+            const max = gallery.scrollWidth - gallery.clientWidth;
+            const target = Math.max(0, Math.min(left, max));
+            gallery.scrollTo({ left: Math.round(target), behavior });
+        };
+
+        if (prev2) prev2.addEventListener('click', () => safeScroll('smooth', gallery.scrollLeft - itemWidth()));
+        if (next2) next2.addEventListener('click', () => safeScroll('smooth', gallery.scrollLeft + itemWidth()));
+
+        let x0 = null;
+        gallery.addEventListener('touchstart', (e) => {
+            x0 = e.touches[0].clientX;
+            gallery.scrollLeft += 0;
+        }, { passive: true });
+        gallery.addEventListener('touchend', (e) => {
+            if (x0 == null) return;
+            const x1 = (e.changedTouches && e.changedTouches[0]?.clientX) || x0;
+            const delta = x0 - x1;
+            if (Math.abs(delta) > 20) safeScroll('smooth', gallery.scrollLeft + delta);
+            x0 = null;
+        });
+    }
 
 });
 </script>

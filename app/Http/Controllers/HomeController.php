@@ -34,7 +34,19 @@ class HomeController extends Controller
             ->map(fn ($file) => $file->getFilename())
             ->filter(fn ($filename) => preg_match('/\.(png|jpe?g|gif)$/i', $filename))
             ->reject(fn ($filename) => in_array($filename, ['1.png', '2.png', '3.png']))
-            ->sort()
+            ->sort(function ($a, $b) {
+                preg_match('/(\d+)/', $a, $ma);
+                preg_match('/(\d+)/', $b, $mb);
+                $na = isset($ma[1]) ? (int)$ma[1] : 0;
+                $nb = isset($mb[1]) ? (int)$mb[1] : 0;
+                if ($na === $nb) return 0;
+                return ($na < $nb) ? -1 : 1;
+            })
+            ->values();
+
+        $peopleImages = collect(range(1, 8))
+            ->map(fn ($n) => "{$n}.png")
+            ->filter(fn ($filename) => File::exists(public_path("img/people/{$filename}")))
             ->values();
 
         return view('home', compact(
@@ -42,7 +54,8 @@ class HomeController extends Controller
             'promotions',
             'products',
             'latestDrops',
-            'trustedImages'
+            'trustedImages',
+            'peopleImages'
         ));
     }
 }
