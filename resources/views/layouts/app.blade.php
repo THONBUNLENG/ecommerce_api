@@ -28,8 +28,9 @@
     <!-- Styles -->
 
 
-    <link rel="stylesheet" href="{{asset('/css/vendor.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/vendor.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <!-- all css -->
     <style>
         .dropdown-navigation-bar {
@@ -86,24 +87,23 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans font-light antialiased">
     <x-banner />
 
-    <body class="font-light antialiased">
-        @include('layouts.partials.announment')
-        @include('layouts.partials.header')
-        @yield('hero')
+    @include('layouts.partials.announment')
+    @include('layouts.partials.header')
+    @yield('hero')
 
-        @include('layouts.partials.footer')
 
-    </body>
     @stack('modals')
 
     @livewireScripts
 
     <!-- all js -->
-    <script src="{{asset('/js/vendor.js')}}"></script>
-    <script src="{{asset('/js/main.js')}}"></script>
+    <script src="{{asset('js/vendor.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    {{-- <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script> --}}
+
 
     <script type="text/javascript">
           $(document).on("change", ".early_access", function () {
@@ -143,19 +143,28 @@
                     });
                     $('.product').html(html);
 
-                    
-                
+
+
                 }
             });
 
         });
 
-        // $(document).ready(function() {
-         
+        $(document).ready(function() {
+            // Get the current URL
+            var url = window.location.href;
+
+            // Loop through each link in the navigation
+            $('.nav-link').each(function() {
+                // Check if the link's href matches the current URL
+                if (this.href === url) {
+                    // Add the 'active' class to the parent list item
+                    $(this).parent().addClass('active');
+                }
+            });
 
 
-
-        // });
+      });
     </script>
 </body>
 

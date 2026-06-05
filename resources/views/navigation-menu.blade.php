@@ -43,7 +43,6 @@
                                         {{ __('Manage Team') }}
                                     </div>
 
-                                    <!-- Team Settings -->
                                     <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                         {{ __('Team Settings') }}
                                     </x-dropdown-link>

@@ -1,3 +1,13 @@
+/* ==========================
+   Announcement Bar
+========================== */
+
+.announcement-bar {
+    background: #111827;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: 10px 0;
+}
+
 .announcement-text,
 .announcement-text:hover,
 .announcement-text:focus,
@@ -6,26 +16,88 @@
 .currency-list-option:hover {
     text-decoration: none;
     font-size: 14px;
-    line-height: 27px;
-    font-weight: var(--body-font-weight);
-    color: #000;
+    line-height: 1.5;
+    font-weight: 500;
+    color: #ffffff;
+    transition: all .3s ease;
 }
 
-.currency-list-option,
+.announcement-text:hover,
+.currency-btn:hover,
 .currency-list-option:hover {
-    color: var(--body-color);
+    color: #fbbf24;
 }
 
 .announcement-text {
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.announcement-sale {
+    color: #fbbf24;
+    font-weight: 700;
 }
 
 .flag {
-    min-width: 20px;
-    max-width: 20px;
-    margin-right: 3px;
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.currency-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
 }
 
 .currency-list {
-    min-width: auto;
+    min-width: 140px;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.currency-list-option {
+    display: block;
+    padding: 10px 15px;
+    color: #374151;
+    background: #fff;
+}
+
+.currency-list-option:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+/* Center Sale Text */
+
+.sale-message {
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .3px;
+}
+
+.sale-message strong {
+    color: #fbbf24;
+}
+
+/* Mobile */
+
+@media (max-width: 991px) {
+    .announcement-bar {
+        padding: 8px 0;
+    }
+
+    .announcement-text,
+    .sale-message {
+        font-size: 13px;
+    }
 }

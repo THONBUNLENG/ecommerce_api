@@ -5,7 +5,7 @@
                 <div class="col-lg-3 d-lg-block d-none">
                     <div class="announcement-call-wrapper">
                         <div class="announcement-call">
-                            <a class="announcement-text text-white" href="tel:+1-078-2376">Call: +1 078 2376</a>
+                            <a class="announcement-text text-white" href="tel:+1-078-2376">Call: +1 011 820 595</a>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                             @include('layouts.partials.header-right-auth')
                             @endauth
 
-                            
+
                         </div>
                     </div>
                 </div>

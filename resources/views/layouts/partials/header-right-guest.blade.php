@@ -1,10 +1,4 @@
-<div class="flex space-x-5">
-    <a class="flex space-x-2 items-center hover:text-yellow-500 text-sm text-gray-500"
-       href="http://127.0.0.1:8000/login">
-        Login
-    </a>
-    <a class="flex space-x-2 items-center hover:text-yellow-500 text-sm text-gray-500"
-       href="http://127.0.0.1:8000/register">
-        Register
-    </a>
+<div class="d-flex align-items-center gap-3">
+    <a class="text-decoration-none text_13" href="{{ route('login') }}">Login</a>
+    <a class="text-decoration-none text_13" href="{{ route('register') }}">Register</a>
 </div>

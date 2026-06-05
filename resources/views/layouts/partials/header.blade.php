@@ -7,7 +7,7 @@
                         <div class="col-lg-3 col-md-4 col-4">
                             <div class="header-logo">
                                 <a href="{{route('home')}}" class="logo-main">
-                                    <img src="{{asset('/img/zando.png')}}" loading="lazy" alt="bisum" width="140">
+                                    <img src="{{asset('/img/looma_logo.png')}}" loading="lazy" alt="bisum" width="140">
                                 </a>
                             </div>
                         </div>
@@ -30,21 +30,8 @@
                                         </div>
                                         <div class="submenu-transform submenu-transform-desktop">
                                             <ul class="submenu list-unstyled">
-                                                <li class="menu-list-item nav-item-sub">
-                                                    <a class="nav-link-sub nav-text-sub" href="index.html">Home 1</a>
-                                                </li>
-                                                <li class="menu-list-item nav-item-sub">
-                                                    <a class="nav-link-sub nav-text-sub" href="index-shoe.html">Home
-                                                        2</a>
-                                                </li>
-                                                <li class="menu-list-item nav-item-sub">
-                                                    <a class="nav-link-sub nav-text-sub" href="index-bag.html">Home
-                                                        3</a>
-                                                </li>
-                                                <li class="menu-list-item nav-item-sub">
-                                                    <a class="nav-link-sub nav-text-sub" href="index-tools.html">Home
-                                                        4</a>
-                                                </li>
+
+
                                             </ul>
                                         </div>
                                     </li>
