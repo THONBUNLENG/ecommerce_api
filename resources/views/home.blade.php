@@ -289,22 +289,83 @@ body {
 
 .section-header { margin-bottom: 72px !important; padding: 0 16px; }
 
+/* Layout Alignment Box */
 .section-icons-slider {
     position: relative;
-    padding: 0 60px;
-    margin: 0 auto 72px;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
+/* Horizontal Gallery Carriage */
 .section-icons {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
+    gap: 24px;                  /* Clean spacing profile between image assets */
+    width: 100%;
+    overflow-x: auto;           /* Forces extra images into an off-screen scrollable track */
     scroll-behavior: smooth;
-    gap: 20px;
-    padding: 20px 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    padding: 15px 0;
+
+    /* Disables visible default scroll tracks across platforms */
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+.section-icons::-webkit-scrollbar {
+    display: none;              /* Chrome, Safari, and Opera */
+}
+
+/* Card Element Configurations */
+.section-icon-wrapper {
+    flex: 0 0 270px;            /* ABSOLUTE MUST: Stops CSS from shrinking your 1-24 sequence loop */
+    height: 400px;              /* High-end portrait layout aspect ratio */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-icon-wrapper:hover {
+    transform: translateY(-6px);
+}
+
+/* Image Element Mapping */
+.section-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+}
+
+/* Slider Left/Right Buttons */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    background: #ffffff;
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    color: #111111;
+    transition: all 0.25s ease;
+}
+.gallery-nav:hover {
+    background: #111111;
+    color: #ffffff;
+}
+.gallery-prev { left: -23px; }
+.gallery-next { right: -23px; }
+
+.section-icons.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
 }
 
 .section-icons::-webkit-scrollbar {
@@ -313,18 +374,19 @@ body {
 
 .section-icon-wrapper {
     flex: 0 0 calc(25% - 15px);
-    scroll-snap-align: center;
+    min-width: 0;
+    scroll-snap-align: start;
 }
 
 @media (max-width: 1024px) {
     .section-icon-wrapper {
-        flex: 0 0 calc(50% - 10px);
+        flex-basis: calc(50% - 10px);
     }
 }
 
 @media (max-width: 768px) {
     .section-icon-wrapper {
-        flex: 0 0 100%;
+        flex-basis: 100%;
     }
     .section-icons-slider { padding: 0 50px; }
 }
@@ -364,7 +426,9 @@ body {
 }
 
 .gallery-lightbox {
-    display: block;
+    display: flex;
+    justify-content: center;
+    position: relative;
     cursor: zoom-in;
 }
 
@@ -395,11 +459,12 @@ body {
 
 .section-icon {
     width: 100%;
-    height: 100%;
-    max-width: 360px;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    object-position: center;
+    height: 420px;
+    max-width: 100%;
+    aspect-ratio: auto;
+    object-fit: contain !important;
+    object-position: center center !important;
+    display: block;
     border-radius: 16px;
     border: 2px solid rgba(255,255,255,0.9);
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
@@ -413,11 +478,11 @@ body {
 }
 
 @media (max-width: 768px) {
-    .section-icon { max-width: 280px; aspect-ratio: 3/5; border-radius: 14px; }
+    .section-icon { height: 420px; border-radius: 14px; }
 }
 
 @media (max-width: 576px) {
-    .section-icon { max-width: 240px; border-radius: 12px; }
+    .section-icon { height: 380px; border-radius: 12px; }
 }
 
 .section-heading {
@@ -1114,7 +1179,7 @@ body {
     .featured-collection { padding: 60px 0 !important; }
     .section-header { margin-bottom: 48px !important; }
     .section-icons { margin-bottom: 48px !important; gap: 16px !important; }
-    .section-icon { max-width: 280px !important; aspect-ratio: 3/5 !important; border-radius: 14px !important; }
+    .section-icon { width: 100% !important; height: 420px !important; max-width: 100% !important; aspect-ratio: auto !important; border-radius: 14px !important; }
     .section-heading { font-size: 38px !important; }
 
     .product-card { margin-bottom: 36px; }
@@ -1157,7 +1222,7 @@ body {
     .featured-collection { padding: 40px 0 !important; }
     .section-header { margin-bottom: 32px !important; padding: 0 12px; }
     .section-icons { margin-bottom: 32px !important; gap: 12px !important; }
-    .section-icon { max-width: 240px !important; border-radius: 12px !important; }
+    .section-icon { width: 100% !important; height: 380px !important; max-width: 100% !important; aspect-ratio: auto !important; border-radius: 12px !important; }
     .section-heading { font-size: 28px !important; }
     .section-heading::after { width: 50px; }
 
@@ -1276,51 +1341,80 @@ body {
             </div>
         </div>
 
-        {{-- ── Our Models ── --}}
-        <div class="featured-collection mt-100 overflow-hidden">
-            <div class="collection-tab-inner">
-                <div class="container">
-                    <div class="section-header text-center">
-                        <div class="models-heading text-center">
-                            <span class="models-label">Professional Models</span>
-                            <h3 class="models-title">Our Models</h3>
-                            <div class="models-divider">
-                                <span></span>
-                                <i class="fas fa-star"></i>
-                                <span></span>
-                            </div>
-                            <p class="models-description">
-                                Meet our professional models showcasing elegance,
-                                confidence and timeless fashion.
-                            </p>
-                        </div>
+  {{-- ── Our Models ── --}}
+<div class="featured-collection mt-100 overflow-hidden">
+    <div class="collection-tab-inner">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="models-heading text-center">
+                    <span class="models-label">Professional Models</span>
+                    <h3 class="models-title">Our Models</h3>
+                    <div class="models-divider">
+                        <span></span>
+                        <i class="fas fa-star"></i>
+                        <span></span>
                     </div>
-                    <div class="section-icons-slider" id="galleryScroll">
-                        <button class="gallery-nav gallery-prev" aria-label="Scroll Left">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                        <div class="section-icons">
-                            @foreach ($trustedImages as $image)
-                            <div class="section-icon-wrapper">
-                                <a href="{{ asset('img/trusted/' . $image) }}" class="gallery-lightbox" data-gallery="featured-gallery">
-                                    <img class="section-icon"
-                                         src="{{ asset('img/trusted/' . $image) }}"
-                                         alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
-                                </a>
-                            </div>
-                            @endforeach
-                        </div>
-                        <button class="gallery-nav gallery-next" aria-label="Scroll Right">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <p class="models-description">
+                        Meet our professional models showcasing elegance,
+                        confidence and timeless fashion.
+                    </p>
                 </div>
             </div>
+
+            {{-- Slider Track Container --}}
+            <div class="section-icons-slider" id="galleryScroll">
+                <button class="gallery-nav gallery-prev" aria-label="Scroll Left" id="btnPrev">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="section-icons" id="sliderTrack">
+                    @foreach ($trustedImages as $image)
+                    <div class="section-icon-wrapper">
+                        <a href="{{ asset('img/trusted/' . $image) }}" class="gallery-lightbox" data-gallery="featured-gallery">
+                            <img class="section-icon"
+                                 src="{{ asset('img/trusted/' . $image) }}"
+                                 alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+
+                <button class="gallery-nav gallery-next" aria-label="Scroll Right" id="btnNext">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </div>
+    </div>
+</div>
+
+{{-- Inline Slider Engine --}}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const track = document.getElementById("sliderTrack");
+    const prevBtn = document.getElementById("btnPrev");
+    const nextBtn = document.getElementById("btnNext");
+
+    if (track && prevBtn && nextBtn) {
+        // Automatically calculates width of 1 dynamic card wrapper + spacing gaps
+        const getScrollDistance = () => {
+            const card = track.querySelector(".section-icon-wrapper");
+            return card ? card.offsetWidth + 24 : 300;
+        };
+
+        nextBtn.addEventListener("click", () => {
+            track.scrollBy({ left: getScrollDistance(), behavior: "smooth" });
+        });
+
+        prevBtn.addEventListener("click", () => {
+            track.scrollBy({ left: -getScrollDistance(), behavior: "smooth" });
+        });
+    }
+});
+</script>
 
         {{-- ── Popular Products ── --}}
         <div class="popular-products-section overflow-hidden">
@@ -1658,19 +1752,16 @@ body {
                         <li class="menu-list-item nav-item has-dropdown active">
                             <div class="mega-menu-header">
                                 <a class="nav-link active" href="{{ url('/') }}">Home</a>
-                                <span class="open-submenu">
-                                    <svg class="icon icon-dropdown" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                </span>
                             </div>
                         </li>
                         <li class="menu-list-item nav-item">
                             <a class="nav-link" href="{{ route('view-products') }}">Shop</a>
                         </li>
                         <li class="menu-list-item nav-item">
-                            <a class="nav-link" href="#">Blog</a>
+                            <a class="nav-link" href="{{ url('/') }}">Blog</a>
                         </li>
                         <li class="menu-list-item nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                         </li>
                     </ul>
                 </nav>
@@ -2040,9 +2131,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    const gallery = document.getElementById('galleryGallery');
+    const gallery = document.getElementById('galleryScroll')?.querySelector('.section-icons');
     if (gallery) {
-        const itemSelector = '.gallery-item';
+        const itemSelector = '.section-icon-wrapper';
         const prev2 = document.querySelector('.gallery-prev');
         const next2 = document.querySelector('.gallery-next');
         const itemWidth = () => gallery.querySelector(itemSelector)?.getBoundingClientRect().width || 320;
@@ -2056,6 +2147,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (prev2) prev2.addEventListener('click', () => safeScroll('smooth', gallery.scrollLeft - itemWidth()));
         if (next2) next2.addEventListener('click', () => safeScroll('smooth', gallery.scrollLeft + itemWidth()));
+
+        let isGalleryDragging = false;
+        let galleryStartX = 0;
+        let galleryStartScroll = 0;
+
+        gallery.addEventListener('mousedown', (e) => {
+            isGalleryDragging = true;
+            gallery.classList.add('dragging');
+            galleryStartX = e.pageX;
+            galleryStartScroll = gallery.scrollLeft;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isGalleryDragging) return;
+            isGalleryDragging = false;
+            gallery.classList.remove('dragging');
+        });
+
+        gallery.addEventListener('mousemove', (e) => {
+            if (!isGalleryDragging) return;
+            e.preventDefault();
+            gallery.scrollLeft = galleryStartScroll - (e.pageX - galleryStartX);
+        });
 
         let x0 = null;
         gallery.addEventListener('touchstart', (e) => {
