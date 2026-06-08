@@ -1419,10 +1419,10 @@ document.addEventListener("DOMContentLoaded", function () {
         {{-- ── Popular Products ── --}}
         <div class="popular-products-section overflow-hidden">
             <div class="container">
-                <div class="section-header text-center">
+                <div class="section-header text-start">
                     <h2 class="section-heading">Popular Products</h2>
                 </div>
-                <div class="row g-4">
+                <div class="row g-4 justify-content-start">
                     @forelse ($products as $pro)
                     <div class="col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-duration="700">
                         <div class="product-card-fashion">

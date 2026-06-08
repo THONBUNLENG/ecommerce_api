@@ -227,9 +227,6 @@
                                             <a class="nav-link-sub nav-text-sub" href="{{ route('faq') }}">FAQ</a>
                                         </li>
                                         <li class="menu-list-item nav-item-sub">
-                                            <a class="nav-link-sub nav-text-sub" href="404.html">404 page</a>
-                                        </li>
-                                        <li class="menu-list-item nav-item-sub">
                                             <a class="nav-link-sub nav-text-sub" href="login.html">Login</a>
                                         </li>
                                         <li class="menu-list-item nav-item-sub">

@@ -18,11 +18,12 @@
 
     .faq-hero {
         min-height: 360px;
+        width: 100%;
         display: flex;
         align-items: center;
         background:
             linear-gradient(90deg, rgba(17,17,17,.84), rgba(17,17,17,.32)),
-            url("{{ asset('img/trusted/featured_collection18.png') }}");
+            url("{{ asset('img/menu/looma_1.png') }}");
         background-size: cover;
         background-position: center 20%;
         color: #ffffff;
@@ -187,7 +188,7 @@
         border-radius: 8px;
         background:
             linear-gradient(90deg, rgba(17,17,17,.9), rgba(17,17,17,.6)),
-            url("{{ asset('img/trusted/featured_collection24.png') }}");
+            url("{{ asset('img/menu/looma.png') }}");
         background-size: cover;
         background-position: center 22%;
         color: #ffffff;
@@ -260,11 +261,7 @@
 <main class="faq-page">
     <section class="faq-hero">
         <div class="container">
-            <span class="faq-eyebrow">Help Center</span>
-            <h1 class="faq-title">Frequently Asked Questions</h1>
-            <p class="faq-hero-copy">
-                Find quick answers about ordering, sizing, shipping, returns, payments, and Looma customer support.
-            </p>
+
         </div>
     </section>
 
@@ -376,8 +373,8 @@
 
                     <div class="faq-cta">
                         <div>
-                            <h2>Still have a question?</h2>
-                            <p>Send us a message and our team will help you choose, order, or track your Looma pieces.</p>
+                            <h2></h2>
+                            <p></p>
                         </div>
                         <a href="{{ route('contact') }}">Ask Us</a>
                     </div>
