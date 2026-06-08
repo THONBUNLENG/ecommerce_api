@@ -99,11 +99,10 @@
         .ls-back:hover { opacity: 0.7; text-decoration: underline; }
     </style>
 
-    {{-- Page background --}}
+
     <div class="min-h-screen flex items-center justify-center px-4 py-12"
          style="background: linear-gradient(135deg, #faf8f5 0%, #f5f3f0 100%);">
 
-        {{-- Decorative side panels --}}
         <div class="fixed inset-0 overflow-hidden pointer-events-none">
             <div class="absolute -left-40 top-0 w-[400px] h-full opacity-[0.07] blur-sm"
                  style="background: #8b7355;"></div>
@@ -111,7 +110,6 @@
                  style="background: #8b7355;"></div>
         </div>
 
-        {{-- Card — now has border + shadow + proper padding --}}
         <div class="relative z-10 bg-white"
              style="max-width: 420px; width: 100%;
                     padding: 48px 40px;
@@ -119,12 +117,10 @@
                     border-radius: 16px;
                     box-shadow: 0 8px 40px rgba(15,15,15,0.10);">
 
-            {{-- Logo --}}
             <div class="text-center mb-8">
                 <x-authentication-card-logo />
             </div>
 
-            {{-- Heading --}}
             <h2 style="font-family: var(--ff-display); font-size: 32px; font-weight: 800;
                        color: var(--primary); text-align: center; letter-spacing: -0.03em;
                        margin: 0 0 10px;">
@@ -134,22 +130,16 @@
                       text-align: center; margin: 0 0 32px; font-weight: 400;">
                 Enter your email to receive a reset link.
             </p>
-
-            {{-- Success status --}}
             @if (session('status'))
                 <div class="mb-6 text-sm text-center font-medium text-green-600"
                      style="font-family: var(--ff-body);">
                     {{ session('status') }}
                 </div>
             @endif
-
-            {{-- Validation errors --}}
             <x-validation-errors class="mb-4" />
 
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
-
-                {{-- Email --}}
                 <div class="mb-2">
                     <label for="email" class="ls-label">Email Address</label>
                     <input
@@ -164,16 +154,10 @@
                         placeholder="Enter your email"
                     >
                 </div>
-
-                {{-- Submit — margin-top via .ls-btn --}}
                 <button type="submit" class="ls-btn">
                     Send Reset Link
                 </button>
-
-                {{-- Divider --}}
                 <div style="height: 1px; background: #e8e6e1; margin: 28px 0;"></div>
-
-                {{-- Back link --}}
                 <div class="text-center">
                     <a class="ls-back" href="{{ route('login') }}">← Back to sign in</a>
                 </div>

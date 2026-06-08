@@ -2,7 +2,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
 
-        /* Container Card */
         .login-form {
             width: 100%;
             max-width: 420px;
@@ -54,7 +53,6 @@
             margin-bottom: 8px;
         }
 
-        /* ✅ FIX: Removes browser blue tint, adds gold focus */
         .input-field {
             width: 100%;
             height: 48px;
@@ -77,7 +75,6 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
         }
 
-        /* ✅ FIX: Autofill override — removes browser blue/yellow background */
         .input-field:-webkit-autofill,
         .input-field:-webkit-autofill:hover,
         .input-field:-webkit-autofill:focus {
@@ -200,11 +197,8 @@
         .create-account-link:hover { text-decoration: underline; }
     </style>
 
-    {{-- Background --}}
     <div class="min-h-screen flex items-center justify-center px-4 py-12"
          style="background: linear-gradient(135deg, #faf8f5 0%, #f5f3f0 100%);">
-
-        {{-- Decorative side panels --}}
         <div class="fixed inset-0 overflow-hidden pointer-events-none">
             <div class="absolute -left-40 top-0 w-[400px] h-full opacity-15 blur-sm"
                  style="background: #8b7355;"></div>
@@ -212,19 +206,18 @@
                  style="background: #8b7355;"></div>
         </div>
 
-        {{-- Card --}}
+
         <div class="login-form relative z-10">
 
-            {{-- Logo --}}
+
             <div class="text-center mb-8">
                 <x-authentication-card-logo />
             </div>
 
-            {{-- Heading --}}
+
             <h2 class="welcome-title">Welcome Back</h2>
             <p class="subtitle">Sign in to your account to continue shopping.</p>
 
-            {{-- Errors --}}
             <x-validation-errors class="mb-4" />
 
             @if (session('status'))
@@ -236,7 +229,6 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                {{-- Email --}}
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
                     <input
@@ -252,7 +244,6 @@
                     >
                 </div>
 
-                {{-- Password --}}
                 <div class="form-group password-container">
                     <label for="password" class="form-label">Password</label>
                     <input
@@ -275,8 +266,6 @@
                         </svg>
                     </button>
                 </div>
-
-                {{-- Options row --}}
                 <div class="form-options">
                     <label class="remember-me">
                         <input type="checkbox" name="remember" id="remember_me">
@@ -290,12 +279,10 @@
                     @endif
                 </div>
 
-                {{-- Submit --}}
                 <button type="submit" class="btn-signin">Sign In</button>
 
                 <div class="divider"></div>
 
-                {{-- Footer --}}
                 <div class="form-footer">
                     Don't have an account?
                     <a class="create-account-link" href="{{ route('register') }}">Create account</a>

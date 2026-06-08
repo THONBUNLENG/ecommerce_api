@@ -6,28 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            if (!Schema::hasColumn('products', 'is_popular')) {
-                $table->boolean('is_popular')->default(0);
-            }
-            if (!Schema::hasColumn('products', 'is_latest_drop')) {
-                $table->boolean('is_latest_drop')->default(0);
-            }
+            $table->softDeletes()->after('updated_at');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            //
+            $table->dropSoftDeletes();
         });
     }
 };

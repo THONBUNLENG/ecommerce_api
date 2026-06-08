@@ -11,7 +11,6 @@
             --ff-body: 'Inter', system-ui, sans-serif;
         }
 
-        /* ── Page background ── */
         .ls-page {
             min-height: 100vh;
             display: flex;
@@ -22,8 +21,6 @@
             position: relative;
             overflow: hidden;
         }
-
-        /* Left decorative wood panel */
         .ls-page::before {
             content: '';
             position: absolute;
@@ -35,7 +32,6 @@
             pointer-events: none;
         }
 
-        /* Right decorative wood panel */
         .ls-page::after {
             content: '';
             position: absolute;
@@ -46,8 +42,6 @@
             filter: blur(2px);
             pointer-events: none;
         }
-
-        /* ── Card ── */
         .ls-card {
             position: relative;
             z-index: 10;
@@ -60,7 +54,6 @@
             box-shadow: 0 8px 40px rgba(15,15,15,0.10);
         }
 
-        /* ── Inputs ── */
         .ls-input {
             width: 100%;
             height: 52px;
@@ -92,7 +85,6 @@
             transition: background-color 5000s ease-in-out 0s;
         }
 
-        /* ── Label ── */
         .ls-label {
             display: block;
             margin-bottom: 8px;
@@ -104,7 +96,6 @@
             color: var(--text-primary);
         }
 
-        /* ── Button ── */
         .ls-btn {
             width: 100%;
             height: 52px;
@@ -132,7 +123,6 @@
 
         .ls-btn:active { transform: translateY(0); box-shadow: none; }
 
-        /* ── Links ── */
         .ls-link {
             font-family: var(--ff-body);
             font-size: 14px;
@@ -147,12 +137,10 @@
     <div class="ls-page">
         <div class="ls-card">
 
-            {{-- Logo --}}
             <div style="text-align: center; margin-bottom: 32px;">
                 <x-authentication-card-logo />
             </div>
 
-            {{-- Heading --}}
             <h2 style="font-family: var(--ff-display); font-size: 32px; font-weight: 800;
                        color: var(--primary); text-align: center; letter-spacing: -0.03em;
                        margin: 0 0 10px;">
@@ -168,7 +156,7 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                {{-- Full Name --}}
+
                 <div style="margin-bottom: 20px;">
                     <label for="name" class="ls-label">Full Name</label>
                     <input id="name" class="ls-input" type="text" name="name"
@@ -176,7 +164,6 @@
                            placeholder="Enter your full name">
                 </div>
 
-                {{-- Email --}}
                 <div style="margin-bottom: 20px;">
                     <label for="email" class="ls-label">Email Address</label>
                     <input id="email" class="ls-input" type="email" name="email"
@@ -184,7 +171,6 @@
                            placeholder="Enter your email">
                 </div>
 
-                {{-- Password --}}
                 <div style="margin-bottom: 20px;">
                     <label for="password" class="ls-label">Password</label>
                     <input id="password" class="ls-input" type="password" name="password"
@@ -192,7 +178,6 @@
                            placeholder="Create a password">
                 </div>
 
-                {{-- Confirm Password --}}
                 <div style="margin-bottom: 24px;">
                     <label for="password_confirmation" class="ls-label">Confirm Password</label>
                     <input id="password_confirmation" class="ls-input" type="password"
@@ -200,7 +185,6 @@
                            placeholder="Confirm your password">
                 </div>
 
-                {{-- Terms --}}
                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                     <div style="margin-bottom: 24px;">
                         <label for="terms" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
@@ -216,13 +200,10 @@
                     </div>
                 @endif
 
-                {{-- Submit --}}
                 <button type="submit" class="ls-btn">Create Account</button>
 
-                {{-- Divider --}}
                 <div style="height: 1px; background: #e8e6e1; margin: 28px 0;"></div>
 
-                {{-- Footer --}}
                 <div style="text-align: center;">
                     <span style="font-family: var(--ff-body); font-size: 14px; color: var(--text-secondary);">
                         Already have an account?

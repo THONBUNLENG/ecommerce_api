@@ -33,14 +33,15 @@ class UserResource extends Resource
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('role')
                     ->options([
                         'admin' => 'Admin',
                         'user' => 'User',
-                    ])->required(),
-                Forms\Components\FileUpload::make('profile_photo'),
+                    ]),
+                Forms\Components\FileUpload::make('profile_photo_path')
+                    ->label('Profile Photo')
+                    ->image(),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),

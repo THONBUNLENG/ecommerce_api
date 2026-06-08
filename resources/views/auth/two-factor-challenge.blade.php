@@ -22,7 +22,7 @@
             overflow: hidden;
         }
 
-        /* Left wood panel */
+
         .ls-panel-left {
             position: fixed;
             left: 0; top: 0;
@@ -33,7 +33,7 @@
             pointer-events: none;
         }
 
-        /* Right wood panel */
+
         .ls-panel-right {
             position: fixed;
             right: 0; top: 0;
@@ -44,7 +44,6 @@
             pointer-events: none;
         }
 
-        /* Gold accent lines top & bottom */
         .ls-gold-top {
             position: fixed; top: 0; left: 0; right: 0;
             height: 3px;
@@ -63,7 +62,6 @@
             z-index: 20;
         }
 
-        /* Card */
         .ls-card {
             position: relative;
             z-index: 10;
@@ -76,7 +74,6 @@
             box-shadow: 0 8px 48px rgba(15,15,15,0.12);
         }
 
-        /* Input */
         .ls-input {
             width: 100%;
             height: 52px;
@@ -108,7 +105,6 @@
             transition: background-color 5000s ease-in-out 0s;
         }
 
-        /* Label */
         .ls-label {
             display: block;
             margin-bottom: 8px;
@@ -120,7 +116,6 @@
             color: var(--text-primary);
         }
 
-        /* Button */
         .ls-btn {
             width: 100%;
             height: 52px;
@@ -147,8 +142,6 @@
         }
 
         .ls-btn:active { transform: translateY(0); box-shadow: none; }
-
-        /* Link */
         .ls-link {
             font-family: var(--ff-body);
             font-weight: 600;
@@ -158,20 +151,16 @@
         }
         .ls-link:hover { opacity: 0.7; text-decoration: underline; }
     </style>
-
-    {{-- Gold accent lines --}}
     <div class="ls-gold-top"></div>
     <div class="ls-gold-bottom"></div>
 
     <div class="ls-page">
-        {{-- Wood side panels --}}
         <div class="ls-panel-left"></div>
         <div class="ls-panel-right"></div>
 
-        {{-- Card --}}
+
         <div class="ls-card">
 
-            {{-- Logo --}}
             <div style="text-align: center; margin-bottom: 28px;">
                 <x-authentication-card-logo />
             </div>

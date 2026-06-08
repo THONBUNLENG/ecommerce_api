@@ -20,12 +20,12 @@ class HomeController extends Controller
             ->take(2)
             ->get();
 
-        $products = Product::where('is_popular', true)
+        $products = Product::where('is_popular', '=', true)
             ->latest()
             ->take(8)
             ->get();
 
-        $latestDrops = Product::where('is_latest_drop', true)
+        $latestDrops = Product::where('is_latest_drop', '=', true)
             ->latest()
             ->take(8)
             ->get();

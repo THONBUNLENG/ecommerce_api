@@ -256,7 +256,8 @@
                     <div class="contact-methods">
                         <div class="contact-method">
                             <div class="contact-method-icon">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.18 2 2 0 0 1 3.61 1h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L7.55 8.91a16 16 0 0 0 7.54 7.54l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.18 2 2 0 0 1 3.61 1h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L7.55 8.91a16 16 0 0 0 7.54 7.54l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg>
                             </div>
                             <div>
                                 <strong>Phone</strong>
@@ -287,7 +288,7 @@
 
                     <div class="contact-map">
                         <strong>Looma Studio</strong>
-                        <span>Open Monday to Saturday, 9:00 AM - 6:00 PM</span>
+                        <span>Open Monday to Saturday, 8:00 AM - 6:00 PM</span>
                     </div>
                 </div>
 
@@ -322,12 +323,10 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="contact-field">
                             <label for="contact-message">Message</label>
                             <textarea id="contact-message" name="message" placeholder="How can we help?" required></textarea>
                         </div>
-
                         <button class="contact-submit" type="submit">Send Message</button>
                     </form>
                 </div>

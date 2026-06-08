@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductVariation extends Model
+class Wishlist extends Model
 {
     use HasFactory;
+
     protected $fillable = [
+        'user_id',
         'product_id',
-        'color_id',
-        'size_id',
-        'stock_quantity',
-        'price_adjustment'
     ];
 
     public function product()
@@ -21,14 +19,8 @@ class ProductVariation extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function color()
+    public function user()
     {
-        return $this->belongsTo(Color::class);
-    }
-
-    public function size()
-    {
-        return $this->belongsTo(Size::class);
+        return $this->belongsTo(User::class);
     }
 }
-            

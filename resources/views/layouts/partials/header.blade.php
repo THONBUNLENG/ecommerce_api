@@ -233,14 +233,14 @@
                                             <a class="nav-link-sub nav-text-sub" href="register.html">Register</a>
                                         </li>
                                         <li class="menu-list-item nav-item-sub">
-                                            <a class="nav-link-sub nav-text-sub" href="wishlist.html">Wishlist</a>
+                                            <a class="nav-link-sub nav-text-sub" href="{{ route('wishlist') }}">Wishlist</a>
                                         </li>
-                                        <li class="menu-list-item nav-item-sub">
-                                            <a class="nav-link-sub nav-text-sub" href="cart.html">Cart</a>
-                                        </li>
-                                        <li class="menu-list-item nav-item-sub">
-                                            <a class="nav-link-sub nav-text-sub" href="checkout.html">Checkout</a>
-                                        </li>
+<li class="menu-list-item nav-item-sub">
+                                             <a class="nav-link-sub nav-text-sub" href="{{ route('cart') }}">Cart</a>
+                                         </li>
+<li class="menu-list-item nav-item-sub">
+                                             <a class="nav-link-sub nav-text-sub" href="{{ route('checkout') }}">Checkout</a>
+                                         </li>
                                     </ul>
                                 </div>
                             </li>
@@ -260,7 +260,7 @@
                                     fill="black" />
                             </svg>
                         </a>
-                        <a class="header-action-item header-wishlist ms-4 d-none d-lg-block" href="wishlist.html">
+                        <a class="header-action-item header-wishlist ms-4 d-none d-lg-block" href="{{ route('wishlist') }}">
                             <svg class="icon icon-wishlist" width="26" height="22" viewBox="0 0 26 22" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
