@@ -25,10 +25,10 @@ class AdminCustomerController extends Controller
         return view('admin.customers.index', compact('customers'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $customer = User::findOrFail($id);
-        $orders = Order::where('user_id', '=', $customer->id)->latest()->get();
+        $orders = Order::where('user_id', $customer->id)->latest()->paginate(10)->appends($request->query());
 
         return view('admin.customers.show', compact('customer', 'orders'));
     }

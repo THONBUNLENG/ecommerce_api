@@ -10,6 +10,8 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'products';
+
     protected $fillable = [
         'name',
         'slug',
@@ -46,7 +48,7 @@ class Product extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-   
+
     // Optional: If using product_variations table
     public function variations()
     {

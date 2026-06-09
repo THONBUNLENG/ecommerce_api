@@ -69,7 +69,6 @@ class AdminProductController extends Controller
             'stock_status' => 'required|in:in_stock,out_of_stock,on_backorder',
             'category_id' => 'required|exists:categories,id',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'is_active' => 'boolean',
             'is_popular' => 'boolean',
             'is_latest_drop' => 'boolean',
             'meta_title' => 'nullable|string|max:60',
