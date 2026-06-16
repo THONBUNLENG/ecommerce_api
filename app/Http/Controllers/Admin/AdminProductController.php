@@ -22,6 +22,14 @@ class AdminProductController extends Controller
             $query->onlyTrashed();
         }
 
+        if ($request->boolean('incomplete')) {
+            $query->where(function ($q) {
+                $q->where('is_active', false)
+                    ->orWhereNull('price')
+                    ->orWhere('stock_quantity', '<', 1);
+            });
+        }
+
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -56,6 +64,10 @@ class AdminProductController extends Controller
             'inactive' => Product::where('is_active', false)->count(),
             'trashed' => Product::onlyTrashed()->count(),
             'low_stock' => Product::where('stock_quantity', '<', 10)->where('stock_status', '!=', 'out_of_stock')->count(),
+            'incomplete' => Product::where('is_active', false)
+                ->orWhereNull('price')
+                ->orWhere('stock_quantity', '<', 1)
+                ->count(),
         ];
 
         return view('admin.products.index', compact('products', 'categories', 'colors', 'sizes', 'stats'));
@@ -67,15 +79,16 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'nullable|string|max:100|unique:products,sku',
             'category_id' => 'required|exists:categories,id',
-            'brand' => 'nullable|string|max:255',
+            'manufacturer' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'original_price' => 'nullable|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'length' => 'nullable|numeric|min:0',
-            'width' => 'nullable|numeric|min:0',
-            'height' => 'nullable|numeric|min:0',
+            'dim_l' => 'nullable|numeric|min:0',
+            'dim_w' => 'nullable|numeric|min:0',
+            'dim_h' => 'nullable|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',
+            'stock_status' => 'nullable|string',
             'description' => 'nullable|string|max:500',
             'long_description' => 'nullable|string',
             'meta_title' => 'nullable|string|max:60',
@@ -96,38 +109,30 @@ class AdminProductController extends Controller
             'tier_price' => 'nullable|array',
         ]);
         $validated['stock_status'] = $request->input('stock_quantity') > 0 ? 'in_stock' : 'out_of_stock';
-        $validated['slug'] = $this->generateUniqueSlug($validated['name']);
-        $validated['user_id'] = auth()->id();
-        $validated['is_active'] = $request->boolean('is_active', true);
-        $validated['is_featured'] = $request->boolean('is_featured', false);
-        $validated['free_shipping'] = $request->boolean('free_shipping', false);
-        $validated['b2b_only'] = $request->boolean('b2b_only', false);
-        $validated['pre_order'] = $request->boolean('pre_order', false);
-        $validated['exemptions'] = $request->input('exemptions', []);
-        $tiers = [];
-        if ($request->has('tier_qty')) {
-            foreach ($request->input('tier_qty') as $index => $qty) {
-                if (!empty($qty) && isset($request->input('tier_price')[$index])) {
-                    $tiers[] = [
-                        'qty' => (int)$qty,
-                        'price' => (float)$request->input('tier_price')[$index]
-                    ];
-                }
-            }
-        }
-        $validated['tier_pricing'] = $tiers;
-        $validated['original_price'] = $request->input('original_price');
-        $validated['discount_price'] = $request->input('discount_price');
-        $validated['long_description'] = $request->input('long_description');
-        $validated['meta_title'] = $request->input('meta_title');
-        $validated['meta_description'] = $request->input('meta_description');
-        $validated['sizes'] = $request->input('sizes', []);
-        $validated['waist_sizes'] = array_map('intval', $request->input('waist_sizes', []));
-        $validated['colors'] = $request->input('colors', []);
-        $validated['is_popular'] = $request->boolean('is_popular', false);
-        $validated['is_latest_drop'] = $request->boolean('is_latest_drop', false);
 
-        $product = Product::create($validated);
+        $productData = [
+            'name' => $validated['name'],
+            'slug' => $this->generateUniqueSlug($validated['name']),
+            'sku' => $validated['sku'],
+            'description' => $validated['description'],
+            'long_description' => $validated['long_description'],
+            'price' => $validated['price'],
+            'original_price' => $validated['original_price'],
+            'discount_price' => $validated['discount_price'],
+            'category_id' => $validated['category_id'],
+            'stock_quantity' => $validated['stock_quantity'],
+            'stock_status' => $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock',
+            'user_id' => auth()->id(),
+            'is_popular' => $request->boolean('is_popular', false),
+            'is_latest_drop' => $request->boolean('is_latest_drop', false),
+            'is_active' => $request->boolean('is_active', true),
+            'meta_title' => $validated['meta_title'],
+            'meta_description' => $validated['meta_description'],
+            'sizes' => $validated['sizes'] ?? [],
+            'colors' => $validated['colors'] ?? [],
+        ];
+
+        $product = Product::create($productData);
         if ($request->hasFile('images')) {
             $firstPath = null;
             foreach ($request->file('images') as $index => $image) {
@@ -180,15 +185,16 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'nullable|string|max:100|unique:products,sku,' . $product->id,
             'category_id' => 'required|exists:categories,id',
-            'brand' => 'nullable|string|max:255',
+            'manufacturer' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'original_price' => 'nullable|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'length' => 'nullable|numeric|min:0',
-            'width' => 'nullable|numeric|min:0',
-            'height' => 'nullable|numeric|min:0',
+            'dim_l' => 'nullable|numeric|min:0',
+            'dim_w' => 'nullable|numeric|min:0',
+            'dim_h' => 'nullable|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',
+            'stock_status' => 'nullable|string',
             'description' => 'nullable|string|max:500',
             'long_description' => 'nullable|string',
             'meta_title' => 'nullable|string|max:60',
@@ -211,40 +217,29 @@ class AdminProductController extends Controller
         ]);
 
         $validated['stock_status'] = $request->input('stock_quantity') > 0 ? 'in_stock' : 'out_of_stock';
-        $validated['slug'] = $this->generateUniqueSlug($validated['name'], $product->id);
 
-        $validated['is_active'] = $request->boolean('is_active', $product->is_active);
-        $validated['is_featured'] = $request->boolean('is_featured', $product->is_featured);
-        $validated['free_shipping'] = $request->boolean('free_shipping', $product->free_shipping);
-        $validated['b2b_only'] = $request->boolean('b2b_only', $product->b2b_only);
-        $validated['pre_order'] = $request->boolean('pre_order', $product->pre_order);
+        $productData = [
+            'name' => $validated['name'],
+            'slug' => $this->generateUniqueSlug($validated['name'], $product->id),
+            'sku' => $validated['sku'],
+            'description' => $validated['description'],
+            'long_description' => $validated['long_description'],
+            'price' => $validated['price'],
+            'original_price' => $validated['original_price'],
+            'discount_price' => $validated['discount_price'],
+            'category_id' => $validated['category_id'],
+            'stock_quantity' => $validated['stock_quantity'],
+            'stock_status' => $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock',
+            'is_popular' => $request->boolean('is_popular', $product->is_popular),
+            'is_latest_drop' => $request->boolean('is_latest_drop', $product->is_latest_drop),
+            'is_active' => $request->boolean('is_active', $product->is_active),
+            'meta_title' => $validated['meta_title'],
+            'meta_description' => $validated['meta_description'],
+            'sizes' => $validated['sizes'] ?? [],
+            'colors' => $validated['colors'] ?? [],
+        ];
 
-        $validated['exemptions'] = $request->input('exemptions', []);
-
-        $tiers = [];
-        if ($request->has('tier_qty')) {
-            foreach ($request->input('tier_qty') as $index => $qty) {
-                if (!empty($qty) && isset($request->input('tier_price')[$index])) {
-                    $tiers[] = [
-                        'qty' => (int)$qty,
-                        'price' => (float)$request->input('tier_price')[$index]
-                    ];
-                }
-            }
-        }
-        $validated['tier_pricing'] = $tiers;
-        $validated['original_price'] = $request->input('original_price');
-        $validated['discount_price'] = $request->input('discount_price');
-        $validated['long_description'] = $request->input('long_description');
-        $validated['meta_title'] = $request->input('meta_title');
-        $validated['meta_description'] = $request->input('meta_description');
-        $validated['sizes'] = $request->input('sizes', []);
-        $validated['waist_sizes'] = array_map('intval', $request->input('waist_sizes', []));
-        $validated['colors'] = $request->input('colors', []);
-        $validated['is_popular'] = $request->boolean('is_popular', $product->is_popular);
-        $validated['is_latest_drop'] = $request->boolean('is_latest_drop', $product->is_latest_drop);
-
-        $product->update($validated);
+        $product->update($productData);
 
         if ($request->hasFile('images')) {
             $existingPrimary = $product->images()->where('is_primary', true)->first();

@@ -775,6 +775,15 @@
                             'Yellow' => '#facc15', 'Pink' => '#f472b6', 'Purple' => '#a855f7',
                             'Orange' => '#f97316',
                         ];
+                        $variationOptions = $variations->map(function ($v) use ($product) {
+                            return [
+                                'id' => $v->id,
+                                'color' => $v->color->name ?? null,
+                                'size' => $v->size->name ?? null,
+                                'stock' => $v->stock_quantity,
+                                'price' => $product->price + ($v->price_adjustment ?? 0),
+                            ];
+                        })->values()->all();
                     @endphp
 
                     @if($variations->count() > 0)
@@ -970,15 +979,7 @@
 var vpColorMap = @json($colorMap);
 var vpColors = @json($colors);
 var vpSizes = @json($sizes);
-var vpVariations = @json($variations->map(function($v) {
-    return [
-        'id' => $v->id,
-        'color' => $v->color->name ?? null,
-        'size' => $v->size->name ?? null,
-        'stock' => $v->stock_quantity,
-        'price' => $product->price + ($v->price_adjustment ?? 0),
-    ];
-})->values()->all());
+var vpVariations = @json($variationOptions);
 
 var vpSelectedColor = null;
 var vpSelectedSize = null;

@@ -885,6 +885,69 @@
             font-size: 13.5px;
         }
 
+        .action-btn.del {
+            color: #fca5a5;
+        }
+
+        .delete-modal {
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            color: var(--text-primary);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .delete-modal-body {
+            padding: 1.4rem;
+            text-align: center;
+        }
+
+        .delete-modal-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 1rem;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(239, 68, 68, 0.14);
+            color: #f87171;
+            font-size: 1.6rem;
+        }
+
+        .delete-modal h5 {
+            margin: 0 0 .45rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .delete-modal p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .delete-modal strong {
+            color: #fff;
+            word-break: break-word;
+        }
+
+        .delete-modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 1.25rem;
+        }
+
+        .btn-save-danger {
+            background: #ef4444;
+        }
+
+        .btn-save-danger:hover {
+            opacity: .88;
+        }
+
         @media (max-width: 1200px) {
             .sidebar {
                 width: var(--sidebar-collapsed);
@@ -1060,6 +1123,10 @@
                         <div class="sm-label">Active</div>
                         <div class="sm-value" style="color:#fff;">{{ $stats['active'] ?? 0 }}</div>
                     </div>
+                    <a href="{{ route('panel.products.index', ['incomplete' => 1]) }}" class="stat-mini" style="cursor:pointer;text-decoration:none;color:inherit;">
+                        <div class="sm-label" style="color:#fca5a5;">Product Errors</div>
+                        <div class="sm-value" style="color:#ef4444;">{{ $stats['incomplete'] ?? 0 }}</div>
+                    </a>
                     <div class="stat-mini">
                         <div class="sm-label">Low Stock</div>
                         <div class="sm-value" style="color:#fbbf24;">{{ $stats['low_stock'] ?? 0 }}</div>
@@ -1148,14 +1215,11 @@
                                                 class="action-btn view" title="View"><i class="bi bi-eye"></i></a>
                                             <button class="action-btn edit" onclick="editProduct({{ $product->id }})"
                                                 title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <form action="{{ route('panel.products.destroy', $product->id) }}" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('Move {{ $product->name }} to trash?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="action-btn del" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </form>
+                                            <button type="button" class="action-btn del delete-product-btn"
+                                                data-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                                                data-url="{{ route('panel.products.destroy', $product->id) }}" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -1479,8 +1543,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="form-section">
                     <div class="form-section-title">Product Options, Additional Sections & Attributes</div>
                     <div class="form-row">
@@ -1505,9 +1567,8 @@
                                     <option value="size_guide">Size Guide & Fitting (មគ្គុទ្ទេស & ទំហំ)</option>
                                     <option value="authenticity">Authenticity Guarantee (ការធានាផលិតផលពិត)</option>
                                     <option value="product_care">Luxury Product Care (ផលិតផលប្រណិត)</option>
-                                    <option value="shipping_returns">Shipping & Returns Policy (គោលការណ៍ដឹកជញ្ជូន)
-                                    </option>
-                                    <option value="warranty_repairs">Warranty & Repairs (ការធានា និងការជួសជុល)</option>
+                                    <option value="shipping_returns">Shipping & Returns Policy (គោលការណ៍ដឹកជញ្ជូន)</option>
+                                    <option value="warranty_repairs">Warranty & Repairs (ការធានា និង ការជួសជុល)</option>
                                     <option value="gift_wrapping">Premium Gift Wrapping (សេវាកម្មវេចខ្ចប់កាដូ)</option>
                                 </select>
                             </div>
@@ -1558,7 +1619,6 @@
                         </div>
                     </div>
                 </div>
-
             </form>
         </div>
         <div class="drawer-footer">
@@ -1571,10 +1631,34 @@
             </button>
         </div>
     </div>
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content delete-modal">
+                <form id="deleteProductForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="delete-modal-body">
+                        <div class="delete-modal-icon">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                        <h5>Delete Product?</h5>
+                        <p class="mb-0">
+                            This will move <strong id="deleteProductName"></strong> to trash.
+                        </p>
+                        <div class="delete-modal-actions">
+                            <button type="button" class="btn-reset" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn-save btn-save-danger">
+                                <i class="bi bi-trash me-1"></i> Move to Trash
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
         <div class="modal-content"></div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const drawer = document.getElementById('addProductDrawer');
@@ -1584,13 +1668,11 @@
         const drawerMinBtn = document.getElementById('drawerMinBtn');
         const resizer = document.getElementById('drawerResizer');
         const widthBadge = document.getElementById('drawerWidthBadge');
-
         const productForm = document.getElementById('productForm');
         const formMethod = document.getElementById('formMethod');
         const productId = document.getElementById('productId');
         const storeUrl = productForm.dataset.storeUrl;
         const updateUrlTemplate = productForm.dataset.updateUrl;
-
         productForm.addEventListener('submit', function () {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             const csrfInput = this.querySelector('input[name="_token"]');
@@ -1636,6 +1718,7 @@
                 drawerMinBtn.style.display = 'none';
             }
         }
+
         drawerMaxBtn.addEventListener('click', () => setMaximized(!isMaximized));
         drawerMinBtn.addEventListener('click', () => {
             currentWidth = DEFAULT_WIDTH;
@@ -1655,6 +1738,7 @@
             document.body.style.userSelect = 'none';
             e.preventDefault();
         });
+
         document.addEventListener('mousemove', e => {
             if (!isDragging) return;
             const delta = startX - e.clientX;
@@ -1710,7 +1794,6 @@
             productForm.action = updateUrlTemplate.replace('__ID__', id);
             formMethod.value = 'PUT';
             document.querySelectorAll('.check-size, .check-waist, .check-color').forEach(el => el.checked = false);
-
             fetch(`/panel/products/${id}/edit`)
                 .then(res => res.json())
                 .then(data => {
@@ -1730,20 +1813,28 @@
                     document.getElementById('pMetaDesc').value = data.meta_description ?? '';
                     document.getElementById('pDescription').value = data.description ?? '';
                     document.getElementById('pLongDescription').value = data.long_description ?? '';
-
                     if (data.sizes) data.sizes.forEach(s => { const el = document.getElementById(`size_${s}`); if (el) el.checked = true; });
                     if (data.waist_sizes) data.waist_sizes.forEach(w => { const el = document.getElementById(`waist_${w}`); if (el) el.checked = true; });
                     if (data.colors) data.colors.forEach(c => { const el = document.getElementById(`color_${c}`); if (el) el.checked = true; });
-
                     openDrawer();
                 })
-                .catch(err => console.error('Could not fetch product data:', err));
+                    .catch(err => console.error('Could not fetch product data:', err));
         }
-
+        const deleteProductForm = document.getElementById('deleteProductForm');
+        const deleteProductName = document.getElementById('deleteProductName');
+        const deleteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteProductModal'));
+        document.querySelectorAll('.delete-product-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const url = this.dataset.url;
+                const name = this.dataset.name;
+                deleteProductForm.action = url;
+                deleteProductName.textContent = name;
+                deleteModal.show();
+            });
+        });
         document.getElementById('sidebarToggle')?.addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('show');
         });
     </script>
 </body>
-
 </html>
