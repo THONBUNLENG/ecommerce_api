@@ -1,123 +1,283 @@
-# 🛒 E-Commerce API
+# E-Commerce Laravel Application
 
-A robust, secure, and scalable RESTful API backend for an e-commerce platform built with Laravel. This API handles user authentication, product catalog management, order processing, and payment records with absolute database integrity.
+A Laravel e-commerce application with a Blade storefront, Jetstream authentication, Filament admin resources, product variations, cart, wishlist, checkout, and order management.
 
----
-
-## 🛠️ Technologies & Core Stack
-
-* **Core Framework:** Laravel 11.x (PHP)
-* **Database Engine:** MySQL 8.x / MariaDB
-* **API Authentication:** Laravel Sanctum (Stateless Token Management)
-* **Dependency & Package Manager:** Composer
-* **API Validation & Testing Standards:** Postman / Insomnia
+The project is primarily a server-rendered Laravel application. `routes/api.php` currently only registers the Sanctum authenticated user endpoint.
 
 ---
 
-## 🚀 Architectural Best Practices
+## Tech Stack
 
-### 1. Database & Precision Mechanics
-* **Strict Monetary Precision:** All monetary columns (`price`, `total_price`, `amount`) utilize `DECIMAL(10,2)` instead of `FLOAT` or `DOUBLE`. This completely eliminates floating-point rounding errors during financial calculations.
-* **Point-in-Time Price Auditing:** The `order_items` table features a dedicated `price` column to capture a critical historic snapshot. If a merchant updates a product's price in the master catalog later, historical financial records, past invoices, and gross sales calculations remain entirely uncorrupted.
-* **Referential Integrity Constraints:** * Uses `onDelete('cascade')` for standard child dependencies (e.g., if a user deletes their account, their pending orders cascade safely).
-  * Enforces `onDelete('restrict')` on `order_items.product_id`. This hard-blocks the accidental deletion of a core product from the master catalog if it is tied to active, historic transaction data.
-
-### 2. Performance & Query Optimization
-* **Index Strategy:** Targeted database indexes are applied to heavily filtered columns and lookups. Foreign keys like `user_id`, `category_id`, and `order_id` are indexed implicitly by Laravel's `foreignId` blueprint method, alongside columns frequently targeted in search scopes (such as `users.email`).
-* **Framework Convention Alignment:** Table names are pluralized snake_case (`users`, `order_items`) to mesh flawlessly with Laravel's Eloquent Object-Relational Mapping (ORM), eliminating the need to declare explicit overrides in model setups.
-
-### 3. API Security & Integrity
-* **Cryptographic Hashing:** Passwords are never stored as plaintext. All credentials are pass-through hashed via standard hashing algorithms (`Bcrypt` or `Argon2ID`) leveraging Laravel's native `Hash::make()` abstraction.
-* **Database-Level Data Scoping:** Fields like `orders.status` and `payments.status` utilize restricted `ENUM` pools instead of free-form string entries. This stops unvalidated or corrupted payload data from compromising the order lifecycle pipeline.
-* **Unified State Tracking:** Standard Laravel timestamp rows (`created_at` and `updated_at`) are appended to all tables to provide instantaneous auditing, row tracing, and simple delta tracking for API syncing.
+- **Framework:** Laravel 10.x
+- **PHP:** 8.1+
+- **Database:** MySQL
+- **Admin Panel:** Filament 3.x
+- **Authentication/UI:** Laravel Jetstream, Fortify, Livewire 3.x
+- **API Tokens:** Laravel Sanctum
+- **Frontend Build:** Vite 5, Tailwind CSS 3, PostCSS, Autoprefixer
+- **Image Handling:** Intervention Image
+- **Testing:** PHPUnit
 
 ---
 
-## 🗄️ Database Schema Design
+## Installation
 
-The relational database structure is highly optimized for transaction consistency, precise historical tracking, and speed.
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+npm run dev
+php artisan serve
+```
 
-### 📋 Tables Overview
+Run the app at:
 
-#### 1. users
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| email | VARCHAR(255) | Unique, Not Null |
-| password | VARCHAR(255) | Not Null (Hashed) |
-| address | VARCHAR(255) | Nullable |
-| phone | VARCHAR(255) | Nullable |
-| is_active | BOOLEAN | Default TRUE |
-| profile_image | VARCHAR(255) | Nullable |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
-
-#### 2. categories
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| name | VARCHAR(255) | Not Null |
-| description | TEXT | Nullable |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
-
-#### 3. products
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| category_id | BIGINT | Foreign Key → `categories(id)` (On Delete Cascade) |
-| name | VARCHAR(255) | Not Null |
-| price | DECIMAL(10,2) | Not Null |
-| description | TEXT | Nullable |
-| image_url | VARCHAR(255) | Nullable |
-| stock_quantity | INT | Default 0 |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
-
-#### 4. orders
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| user_id | BIGINT | Foreign Key → `users(id)` (On Delete Cascade) |
-| total_price | DECIMAL(10,2) | Not Null |
-| status | ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') | Default 'pending' |
-| payment_method | VARCHAR(100) | Not Null |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
-
-#### 5. order_items
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| order_id | BIGINT | Foreign Key → `orders(id)` (On Delete Cascade) |
-| product_id | BIGINT | Foreign Key → `products(id)` (On Delete Restrict) |
-| quantity | INT | Not Null |
-| price | DECIMAL(10,2) | Not Null (Snapshot of price at purchase time) |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
-
-#### 6. payments
-| Field | Type | Constraint |
-| :--- | :--- | :--- |
-| id | BIGINT | Primary Key (Unsigned, Auto Increment) |
-| order_id | BIGINT | Foreign Key → `orders(id)` (On Delete Cascade) |
-| amount | DECIMAL(10,2) | Not Null |
-| payment_method | VARCHAR(255) | Not Null |
-| status | ENUM('pending', 'completed', 'failed', 'refunded') | Default 'pending' |
-| created_at | TIMESTAMP | Nullable |
-| updated_at | TIMESTAMP | Nullable |
+```text
+http://localhost:8000
+```
 
 ---
 
-### 🔗 Entity Relationships
+## Development Commands
 
-text
-users (1) ----------- (N) orders
+```bash
+npm run dev
+npm run build
+php artisan test
+./vendor/bin/pint
+```
 
-categories (1) ------- (N) products
+---
 
-orders (1) ---------- (N) order_items
+## Main Features
 
-products (1) -------- (N) order_items
+### Storefront
 
-orders (1) ---------- (1) payments
+- Home page with slides, promotions, popular products, latest drops, trusted images, and customer images.
+- Featured collection page.
+- Category pages with layout variants:
+  - left sidebar
+  - right sidebar
+  - three columns
+  - four columns
+  - no sidebar
+- Product listing page.
+- Product detail page with related products, images, sizes, colors, and variations.
+- Cart add, update, remove, and checkout flow.
+- Wishlist add and remove.
+- Static pages: about, FAQ, contact, terms, and policy.
+
+### Authentication
+
+- Login and registration through Laravel Jetstream/Fortify.
+- New users are created with `role = user`.
+- Admin users are detected by `role = admin`.
+- Admin login/register redirects to the admin panel dashboard.
+- User login/register redirects to `/dashboard`.
+
+### Admin
+
+The application has two admin areas:
+
+1. **Filament admin panel**
+   - Path: `/admin`
+   - Uses `AdminMiddleware`, which requires `auth()->user()->role === 'admin'`.
+   - Resources include categories, colors, orders, order details, payments, products, promotions, sizes, slides, and users.
+
+2. **Custom admin routes**
+   - Prefix: `/panel`
+   - Requires web authentication and admin role.
+   - Includes dashboard, products, orders, customers, and settings pages.
+
+---
+
+## Public Routes
+
+| Route | Description |
+| :--- | :--- |
+| `GET /` | Home page |
+| `GET /featured-collection` | Featured collection page |
+| `GET /category-pages-with-left-sidebar/{category?}` | Category page with left sidebar |
+| `GET /category-pages-with-right-sidebar/{category?}` | Category page with right sidebar |
+| `GET /category-pages-three-column/{category?}` | Category page with three columns |
+| `GET /category-pages-four-column/{category?}` | Category page with four columns |
+| `GET /category-pages-without-sidebar/{category?}` | Category page without sidebar |
+| `GET /view-products` | Product listing page |
+| `GET /product/{id}` | Product detail page |
+| `GET /filter-products/{cateId}` | JSON product filter by category |
+| `GET /wishlist` | Wishlist page |
+| `DELETE /wishlist/remove/{productId}` | Remove item from wishlist |
+| `GET /cart` | Cart page |
+| `POST /cart/add/{productId}` | Add item to cart |
+| `PUT /cart/update/{itemId}` | Update cart item quantity |
+| `DELETE /cart/remove/{itemId}` | Remove cart item |
+| `GET /checkout` | Checkout page |
+| `POST /checkout/process` | Create order from cart |
+| `GET /about` | About page |
+| `GET /faq` | FAQ page |
+| `GET /contact` | Contact page |
+
+---
+
+## Admin Routes
+
+| Route | Description |
+| :--- | :--- |
+| `GET /panel/dashboard` | Admin dashboard |
+| `GET /panel/products` | Product list |
+| `GET /panel/products/create` | Product create form |
+| `POST /panel/products` | Store product |
+| `POST /panel/products/bulk-deactivate` | Bulk deactivate products |
+| `POST /panel/products/bulk-delete` | Bulk delete products |
+| `POST /panel/products/bulk-restore` | Bulk restore products |
+| `DELETE /panel/products/bulk-force-delete` | Bulk force delete products |
+| `GET /panel/products/{id}/edit` | Product edit form |
+| `PUT /panel/products/{id}` | Update product |
+| `DELETE /panel/products/{id}` | Soft delete product |
+| `DELETE /panel/products/{id}/force` | Force delete product |
+| `POST /panel/products/{id}/restore` | Restore product |
+| `POST /panel/products/{id}/toggle-active` | Toggle product active status |
+| `GET /panel/orders` | Order list |
+| `GET /panel/orders/{id}` | Order detail |
+| `DELETE /panel/orders/{id}` | Delete order |
+| `GET /panel/customers` | Customer list |
+| `GET /panel/customers/{id}` | Customer detail |
+| `GET /panel/settings` | Settings page |
+| `POST /panel/settings` | Update settings |
+
+---
+
+## API Routes
+
+| Route | Method | Auth | Description |
+| :--- | :--- | :--- | :--- |
+| `/api/user` | `GET` | Sanctum | Return authenticated user |
+
+---
+
+## Database Tables
+
+### Core E-Commerce Tables
+
+| Table | Description |
+| :--- | :--- |
+| `users` | Jetstream users with `role` column for admin/user access |
+| `categories` | Product categories |
+| `products` | Products with pricing, stock, SEO, popularity, latest-drop, soft-delete, JSON sizes/colors, SKU, slug, and image fields |
+| `product_images` | Multiple images per product with primary image and sort order |
+| `sizes` | Size options |
+| `colors` | Color options |
+| `product_variations` | Product size/color combinations with stock and price adjustment |
+| `carts` | User cart items with unique `user_id + product_id` |
+| `wishlists` | User wishlist items with unique `user_id + product_id` |
+| `orders` | Customer orders with status, total, and payment method |
+| `order_details` | Order line items with product snapshot price |
+| `payments` | Payment records linked to orders |
+| `promotions` | Homepage promotion records |
+| `slides` | Homepage slider records |
+
+### Laravel/Auth Tables
+
+| Table | Description |
+| :--- | :--- |
+| `password_reset_tokens` | Password reset tokens |
+| `personal_access_tokens` | Sanctum API tokens |
+| `sessions` | Database sessions |
+| `failed_jobs` | Failed queued jobs |
+
+---
+
+## Key Model Relationships
+
+| Model | Relationships |
+| :--- | :--- |
+| `User` | Has many products, carts, wishlists, and orders |
+| `Category` | Has many products |
+| `Product` | Belongs to category and user; has many order details, variations, and images |
+| `ProductVariation` | Belongs to product, color, and size |
+| `ProductImage` | Belongs to product |
+| `Cart` | Belongs to user and product |
+| `Wishlist` | Belongs to user and product |
+| `Order` | Belongs to user; has one payment; has many order details |
+| `OrderDetail` | Belongs to order and product |
+| `Payment` | Belongs to order |
+
+---
+
+## Product Fields
+
+The `products` table includes:
+
+- `id`
+- `name`
+- `slug`
+- `sku`
+- `description`
+- `long_description`
+- `price`
+- `original_price`
+- `discount_price`
+- `category_id`
+- `stock_quantity`
+- `stock_status`
+- `image_url`
+- `user_id`
+- `is_popular`
+- `is_latest_drop`
+- `is_active`
+- `meta_title`
+- `meta_description`
+- `sizes` as JSON
+- `colors` as JSON
+- `deleted_at`
+- `created_at`
+- `updated_at`
+
+---
+
+## Checkout Flow
+
+`POST /checkout/process` validates customer and payment details, calculates subtotal, tax, and total, then creates:
+
+1. One `orders` row.
+2. One `order_details` row for each cart item.
+3. Deletes the authenticated user's cart rows.
+
+The checkout flow does not create rows in the `payments` table.
+
+---
+
+## Seeding
+
+Available seeders include:
+
+- `UserSeeder`
+- `CategorySeeder`
+- `ColorSeeder`
+- `SizeSeeder`
+- `SlideSeeder`
+- `PromotionSeeder`
+- `ProductSeeder`
+- `ProductVariationSeeder`
+- `PaymentSeeder`
+- `OrderDetailSeeder`
+- `OrderSeeder`
+- `DatabaseSeeder`
+
+Run seeds with:
+
+```bash
+php artisan db:seed
+```
+
+---
+
+## Notes
+
+- Product soft deletes are enabled through the `deleted_at` column.
+- Product images are served through the storage URL accessor.
+- Cart and wishlist uniqueness is enforced by `user_id` and `product_id`.
+- Admin access is controlled by the `role` column on `users`.

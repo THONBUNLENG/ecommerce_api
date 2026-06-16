@@ -257,12 +257,12 @@
                 @forelse($wishlistItems ?? [] as $item)
                 <div class="wishlist-card">
                     <div class="wishlist-card-img">
-                        <a href="{{ route('products.show', $item->product->id ?? $item->id) }}">
-                            <img src="{{ $item->product && $item->product->image_url ? asset('storage/' . $item->product->image_url) : asset('img/looma_logo.png') }}"
-                                 alt="{{ $item->product->name ?? $item->name }}">
+                        <a href="{{ route('products.show', $item->product?->id ?? $item->id) }}">
+                            <img src="{{ $item->product?->image_url ? asset('storage/' . $item->product?->image_url) : asset('img/looma_logo.png') }}"
+                                 alt="{{ $item->product?->name ?? $item->name }}">
                         </a>
                         <button class="wishlist-remove"
-                                data-product-id="{{ $item->product->id ?? $item->id }}"
+                                data-product-id="{{ $item->product?->id ?? $item->id }}"
                                 aria-label="Remove from Wishlist">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -271,21 +271,21 @@
                         </button>
                     </div>
                     <div class="wishlist-card-body">
-                        <p class="wishlist-product-category">{{ $item->product->category->name ?? 'Fashion' }}</p>
+                        <p class="wishlist-product-category">{{ $item->product?->category?->name ?? 'Fashion' }}</p>
                         <h3 class="wishlist-product-title">
-                            <a href="{{ route('products.show', $item->product->id ?? $item->id) }}">
-                                {{ $item->product->name ?? $item->name }}
+                            <a href="{{ route('products.show', $item->product?->id ?? $item->id) }}">
+                                {{ $item->product?->name ?? $item->name }}
                             </a>
                         </h3>
                         <div class="wishlist-product-price">
-                            ${{ number_format($item->product->price ?? $item->price, 2) }}
+                            ${{ number_format($item->product?->price ?? $item->price, 2) }}
                         </div>
                         <div class="wishlist-actions">
                             <button class="wishlist-btn wishlist-btn-cart"
-                                    data-product-id="{{ $item->product->id ?? $item->id }}">
+                                    data-product-id="{{ $item->product?->id ?? $item->id }}">
                                 Add to Cart
                             </button>
-                            <a href="{{ route('products.show', $item->product->id ?? $item->id) }}"
+                            <a href="{{ route('products.show', $item->product?->id ?? $item->id) }}"
                                class="wishlist-btn wishlist-btn-view text-center">
                                 View
                             </a>

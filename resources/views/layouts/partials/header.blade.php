@@ -29,7 +29,7 @@
                             </li>
                             <li class="menu-list-item nav-item has-megamenu">
                                 <div class="mega-menu-header">
-                                    <a class="nav-link" href="collection-left-sidebar.html">
+                                    <a class="nav-link" href="{{ route('featured-collection') }}">
                                         Shop
                                     </a>
                                     <span class="open-submenu">
@@ -46,7 +46,7 @@
                                             <li class="menu-list-item nav-item-sub">
                                                 <div class="mega-menu-header">
                                                     <a class="nav-link-sub nav-text-sub megamenu-heading"
-                                                        href="collection-left-sidebar.html">
+                                                        href="{{ route('category-pages.left-sidebar') }}">
                                                         CATEGORY PAGES
                                                     </a>
                                                 </div>
@@ -54,17 +54,17 @@
                                                     <ul class="megamenu list-unstyled">
                                                         <li class="menu-list-item nav-item-sub">
                                                             <a class="nav-link-sub nav-text-sub"
-                                                                href="collection-left-sidebar.html">With Left
+                                                                href="{{ route('category-pages.left-sidebar') }}">With Left
                                                                 Sidebar</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
                                                             <a class="nav-link-sub nav-text-sub"
-                                                                href="collection-right-sidebar.html">With Right
+                                                                href="{{ route('category-pages.right-sidebar') }}">With Right
                                                                 Sidebar</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
                                                             <a class="nav-link-sub nav-text-sub"
-                                                                href="collection-left-sidebar.html">3 Column
+                                                                href="{{ route('featured-collection') }}">3 Column
                                                                 Layout</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
@@ -91,24 +91,24 @@
                                                 <div class="submenu-transform megamenu-transform">
                                                     <ul class="megamenu list-unstyled">
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product.html">Simple Product</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Simple Product</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product.html">Variable Product</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Variable Product</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product.html">Sale Product</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Sale Product</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product.html">Featured & On Sale</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Featured & On Sale</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product-2.html">Tab Inside</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Tab Inside</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -124,12 +124,12 @@
                                                 <div class="submenu-transform megamenu-transform">
                                                     <ul class="megamenu list-unstyled">
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product-2.html">Grid Images</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Grid Images</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
-                                                            <a class="nav-link-sub nav-text-sub"
-                                                                href="product.html">Vertical Thumb</a>
+<a class="nav-link-sub nav-text-sub"
+                                                                 href="{{ route('products.show', 10) }}">Vertical Thumb</a>
                                                         </li>
                                                         <li class="menu-list-item nav-item-sub">
                                                             <a class="nav-link-sub nav-text-sub"
@@ -150,7 +150,7 @@
                                                 <div
                                                     class="mega-menu-header d-flex align-items-center justify-content-between">
                                                     <a class="mega-menu-img nav-link-sub nav-text-sub"
-                                                        href="collection-left-sidebar.html">
+                                                        href="{{ route('featured-collection') }}">
 
                                                         <img class="menu-img" src="{{ asset('img/menu/menu1.png') }}"
                                                             alt="Featured Collection">

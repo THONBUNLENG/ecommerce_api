@@ -95,11 +95,8 @@
             text-decoration: none;
             transition: opacity 0.2s;
         }
-
         .ls-back:hover { opacity: 0.7; text-decoration: underline; }
     </style>
-
-
     <div class="min-h-screen flex items-center justify-center px-4 py-12"
          style="background: linear-gradient(135deg, #faf8f5 0%, #f5f3f0 100%);">
 
@@ -109,18 +106,15 @@
             <div class="absolute -right-40 top-0 w-[400px] h-full opacity-[0.07] blur-sm"
                  style="background: #8b7355;"></div>
         </div>
-
         <div class="relative z-10 bg-white"
              style="max-width: 420px; width: 100%;
                     padding: 48px 40px;
                     border: 1px solid #e8e6e1;
                     border-radius: 16px;
                     box-shadow: 0 8px 40px rgba(15,15,15,0.10);">
-
             <div class="text-center mb-8">
                 <x-authentication-card-logo />
             </div>
-
             <h2 style="font-family: var(--ff-display); font-size: 32px; font-weight: 800;
                        color: var(--primary); text-align: center; letter-spacing: -0.03em;
                        margin: 0 0 10px;">
@@ -137,7 +131,6 @@
                 </div>
             @endif
             <x-validation-errors class="mb-4" />
-
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="mb-2">
@@ -161,9 +154,8 @@
                 <div class="text-center">
                     <a class="ls-back" href="{{ route('login') }}">← Back to sign in</a>
                 </div>
-
             </form>
         </div>
     </div>
-
 </x-guest-layout>
+

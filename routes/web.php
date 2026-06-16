@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryPageController;
+use App\Http\Controllers\FeaturedCollectionController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -10,8 +12,20 @@ use App\Http\Controllers\WishlistController;
 
 
 Route::get('/',HomeController::class)->name('home');
+Route::get('/featured-collection', FeaturedCollectionController::class)->name('featured-collection');
+Route::get('/category-pages-with-left-sidebar/{category?}', [CategoryPageController::class, 'index'])->name('category-pages.left-sidebar');
+Route::get('/category-pages-with-right-sidebar/{category?}', [CategoryPageController::class, 'rightSidebar'])->name('category-pages.right-sidebar');
+Route::redirect('/collection-left-sidebar.html', '/category-pages-with-left-sidebar');
+Route::redirect('/collection-right-sidebar.html', '/category-pages-with-right-sidebar');
+Route::redirect('/collection-without-sidebar.html', '/category-pages-without-sidebar');
+Route::redirect('/collection-no-sidebar.html', '/category-pages-without-sidebar');
+Route::get('/category-pages-three-column/{category?}', [CategoryPageController::class, 'threeColumn'])->name('category-pages.three-column');
+Route::redirect('/collection-three-column.html', '/category-pages-three-column');
+Route::get('/category-pages-four-column/{category?}', [CategoryPageController::class, 'fourColumn'])->name('category-pages.four-column');
+Route::redirect('/collection-four-column.html', '/category-pages-four-column');
 Route::view('/about', 'about')->name('about');
 Route::view('/faq', 'faq')->name('faq');
+Route::get('/category-pages-without-sidebar/{category?}', [CategoryPageController::class, 'noSidebar'])->name('category-pages.no-sidebar');
 Route::view('/contact', 'contact')->name('contact');
 Route::get('view-products',[ProductController::class,'index'])->name('view-products' );
 Route::get('product/{id}',[ProductController::class,'getProductDetails'])->name('products.show');
@@ -23,11 +37,11 @@ Route::post('cart/add/{productId}', [CartController::class, 'add'])->name('cart.
 Route::put('cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
 Route::get('/checkout', [CartController::class, 'showCheckout'])->name('checkout');
+Route::post('/checkout/process', [CartController::class, 'processCheckout'])->name('checkout.process');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
         if (auth()->check() && auth()->user()->role === 'admin') {
@@ -37,9 +51,10 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::prefix('panel')->name('panel.')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'admin'])->group(function () {
+Route::prefix('panel')->name('panel.')->middleware(['auth:web', config('jetstream.auth_session'), 'admin'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');
     Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
     Route::post('/products/bulk-deactivate', [AdminProductController::class, 'bulkDeactivate'])->name('products.bulk-deactivate');
     Route::post('/products/bulk-delete', [AdminProductController::class, 'bulkDelete'])->name('products.bulk-delete');

@@ -31,6 +31,13 @@ class Product extends Model
         'is_active',
         'meta_title',
         'meta_description',
+        'sizes',
+        'colors',
+    ];
+
+    protected $casts = [
+        'sizes' => 'array',
+        'colors' => 'array',
     ];
 
     public function category()
@@ -49,9 +56,36 @@ class Product extends Model
     }
 
 
-    // Optional: If using product_variations table
     public function variations()
     {
         return $this->hasMany(ProductVariation::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function getPrimaryImageAttribute()
+    {
+        $primary = $this->images()->where('is_primary', true)->first();
+        if ($primary) {
+            return asset('storage/' . $primary->image_path);
+        }
+        $first = $this->images()->orderBy('sort_order')->first();
+        if ($first) {
+            return asset('storage/' . $first->image_path);
+        }
+        $legacyUrl = $this->attributes['image_url'] ?? null;
+        return $legacyUrl ? asset('storage/' . $legacyUrl) : null;
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $legacyUrl = $this->attributes['image_url'] ?? null;
+        if ($legacyUrl) {
+            return asset('storage/' . $legacyUrl);
+        }
+        return $this->primary_image;
     }
 }

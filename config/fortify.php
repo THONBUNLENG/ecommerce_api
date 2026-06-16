@@ -121,6 +121,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication Pipelines
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the pipelines that will be run during the
+    | authentication process. If a pipeline is not defined, Fortify
+    | will use its internal default pipeline.
+    |
+    */
+
+    'pipelines' => [
+        'login' => null,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Register View Routes
     |--------------------------------------------------------------------------
     |

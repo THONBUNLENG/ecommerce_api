@@ -300,24 +300,23 @@ body {
 /* Horizontal Gallery Carriage */
 .section-icons {
     display: flex;
-    gap: 24px;                  /* Clean spacing profile between image assets */
+    gap: 24px;
     width: 100%;
-    overflow-x: auto;           /* Forces extra images into an off-screen scrollable track */
+    overflow-x: auto;
     scroll-behavior: smooth;
     padding: 15px 0;
 
-    /* Disables visible default scroll tracks across platforms */
-    scrollbar-width: none;      /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 .section-icons::-webkit-scrollbar {
-    display: none;              /* Chrome, Safari, and Opera */
+    display: none;
 }
 
-/* Card Element Configurations */
 .section-icon-wrapper {
-    flex: 0 0 270px;            /* ABSOLUTE MUST: Stops CSS from shrinking your 1-24 sequence loop */
-    height: 400px;              /* High-end portrait layout aspect ratio */
+    flex: 0 0 270px;
+    height: 400px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
@@ -328,7 +327,7 @@ body {
     transform: translateY(-6px);
 }
 
-/* Image Element Mapping */
+
 .section-icon {
     width: 100%;
     height: 100%;
@@ -337,7 +336,6 @@ body {
     display: block;
 }
 
-/* Slider Left/Right Buttons */
 .gallery-nav {
     position: absolute;
     top: 50%;
@@ -504,7 +502,7 @@ body {
     border-radius: 2px;
 }
 
-/* PRODUCT CARDS - Advanced Hover Effects 2025 */
+
 .product-card {
     border: none !important;
     background: transparent !important;
@@ -982,7 +980,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* QUICK VIEW MODAL - Premium 2025 */
+
 #quickview-modal .modal-content {
     border-radius: 12px !important;
     border: 1px solid var(--border-light) !important;
@@ -1109,7 +1107,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* SCROLL UP - Premium Button 2025 */
+
 #scrollup {
     background: var(--primary) !important;
     border: none !important;
@@ -1130,7 +1128,7 @@ body {
     box-shadow: 0 16px 48px rgba(212,175,55,.3) !important;
 }
 
-/* DRAWER MENU - Premium 2025 */
+
 #drawer-menu .offcanvas-header, #drawer-menu .drawer-heading {
     font-family: var(--ff-display) !important;
     font-size: 18px !important;
@@ -1150,7 +1148,6 @@ body {
     padding-left: 8px;
 }
 
-/* RESPONSIVE 2025 MOBILE-FIRST */
 @media (max-width: 1200px) {
     .slide-item { min-height: 580px !important; }
     .slide-img { height: 580px !important; }

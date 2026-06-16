@@ -16,9 +16,13 @@ class ProductController extends Controller
     }
 
     public function getProductDetails($id){
-        $product = Product::with('variations')->find($id);
-        return response()->json($product);
-
+        $product = Product::with(['category', 'images', 'variations.color', 'variations.size'])->findOrFail($id);
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('is_active', true)
+            ->limit(4)
+            ->get();
+        return view('products.show', compact('product', 'relatedProducts'));
     }
     public function filterProducts($cateId){
         $products = Product::where('category_id',$cateId)->paginate(10);

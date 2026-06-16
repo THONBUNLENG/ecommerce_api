@@ -14,7 +14,7 @@ class ProductSeeder extends Seeder
     {
         $categories = Category::pluck('id')->toArray();
         $user = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'adminLooma@gmail.com'],
             ['name' => 'Admin', 'password' => bcrypt('password'), 'role' => 'admin']
         );
 

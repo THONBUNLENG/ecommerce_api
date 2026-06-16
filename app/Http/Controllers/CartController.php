@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -87,5 +86,59 @@ class CartController extends Controller
         }
 
         return view('checkout', compact('cartItems', 'subtotal'));
+    }
+
+    public function processCheckout(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'address' => 'required|string|max:500',
+            'city' => 'required|string|max:100',
+            'state' => 'required|string|max:100',
+            'postal_code' => 'required|string|max:20',
+            'country' => 'required|string|size:2',
+            'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
+            'card_number' => 'nullable|string|max:25',
+            'expiry' => 'nullable|string|max:10',
+            'cvv' => 'nullable|string|max:10',
+        ]);
+
+        $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty.');
+        }
+
+        $subtotal = $cartItems->sum('subtotal');
+        $tax = $subtotal * 0.08;
+        $total = $subtotal + $tax;
+
+        $order = \App\Models\Order::create([
+            'order_id' => uniqid('ORD-'),
+            'amount' => $subtotal,
+            'status' => 'pending',
+            'payment_method' => $validated['payment_method'],
+            'user_id' => auth()->id(),
+            'total' => $total,
+        ]);
+
+        foreach ($cartItems as $item) {
+            $order->orderDetails()->create([
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->product->price,
+            ]);
+        }
+
+        Cart::where('user_id', auth()->id())->delete();
+
+        return redirect()->route('view-products')->with('status', 'Order placed successfully! Order ID: ' . $order->order_id);
     }
 }

@@ -106,16 +106,20 @@ class ProductResource extends Resource
                                             ->default('in_stock'),
                                     ]),
 
-                                Forms\Components\Section::make('Media')
-                                    ->description('Product images')
-                                    ->schema([
-                                        Forms\Components\FileUpload::make('image_url')
-                                            ->label('Main Image')
-                                            ->image()
-                                            ->imageEditor()
-                                            ->directory('products')
-                                            ->required(),
-                                    ]),
+                            Forms\Components\Section::make('Variations')
+                                     ->description('Product sizes and colors')
+                                     ->schema([
+                                         Forms\Components\CheckboxList::make('sizes')
+                                             ->label('Product Sizes')
+                                             ->options(['S' => 'S', 'M' => 'M', 'L' => 'L', 'XL' => 'XL', 'XXL' => 'XXL', '20' => '20', '30' => '30', '40' => '40'])
+                                             ->columns(4),
+                                         Forms\Components\Select::make('colors')
+                                             ->label('Product Colors')
+                                             ->options(Color::pluck('name', 'id'))
+                                             ->multiple()
+                                             ->searchable()
+                                             ->preload(),
+                                     ]),
 
                                 Forms\Components\Section::make('Visibility')
                                     ->schema([
@@ -187,9 +191,6 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Image')
-                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

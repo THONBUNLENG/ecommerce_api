@@ -533,16 +533,11 @@
             </div>
         </div>
 
-        {{-- Content --}}
         <div class="content">
-
-            {{-- ── DASHBOARD SECTION ── --}}
             <div class="page-header">
                 <h4>Dashboard</h4>
                 <p>Welcome back, Admin. Here's what's happening today.</p>
             </div>
-
-            {{-- Metric Row 1 --}}
             <div class="row g-3 mb-4">
                 <div class="col-6 col-lg-3">
                     <div class="metric-card blue">
@@ -582,60 +577,106 @@
                 </div>
             </div>
 
-            {{-- Charts Row --}}
-            <div class="row g-3 mb-4">
-                {{-- Donut: Top Locations --}}
-                <div class="col-lg-4">
-                    <div class="chart-card">
-                        <div class="chart-card-header">
-                            <div class="ch-icon" style="background:#3b82f6;">
-                                <i class="bi bi-geo-alt"></i>
-                            </div>
-                            <div>
-                                <div class="ch-title">Top Locations</div>
-                                <div class="ch-sub">Sales by region</div>
-                            </div>
-                        </div>
-                        <div class="chart-body">
-                            <div class="chart-canvas-wrap" style="height:220px;">
-                                <canvas id="donutChart"></canvas>
-                            </div>
-                            <div class="chart-legend justify-content-center mt-3">
-                                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6;"></span>New York (45%)</div>
-                                <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>Los Angeles (32%)</div>
-                                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>Dallas (23%)</div>
-                            </div>
-                        </div>
-                    </div>
+<div class="row g-3 mb-4">
+    <div class="col-lg-4">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <div class="ch-icon" style="background: #3b82f6;">
+                    <i class="bi bi-geo-alt"></i>
                 </div>
-                <div class="col-lg-8">
-                    <div class="chart-card">
-                        <div class="chart-card-header">
-                            <div class="ch-icon" style="background:#10b981;">
-                                <i class="bi bi-cart"></i>
-                            </div>
-                            <div>
-                                <div class="ch-title">Top Products Sales</div>
-                                <div class="ch-sub">Monthly performance</div>
-                            </div>
-                            <div class="ms-auto d-flex gap-2">
-                                <span class="badge-pill badge-blue">
-                                    <span class="badge-dot" style="background:#3b82f6;"></span>iPhone
-                                </span>
-                                <span class="badge-pill badge-orange">
-                                    <span class="badge-dot" style="background:#f97316;"></span>Mac
-                                </span>
-                            </div>
-                        </div>
-                        <div class="chart-body">
-                            <div class="chart-canvas-wrap" style="height:240px;">
-                                <canvas id="areaChart"></canvas>
-                            </div>
-                        </div>
+                <div>
+                    <div class="ch-title">Top Locations</div>
+                    <div class="ch-sub">Sales by region</div>
+                </div>
+            </div>
+            <div class="chart-body">
+                <div class="chart-canvas-wrap" style="height: 220px;">
+                    <canvas id="donutChart"></canvas>
+                </div>
+                <div class="chart-legend justify-content-center mt-3">
+                    <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span>New York (45%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span>Los Angeles (32%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span>Dallas (23%)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="ch-icon" style="background: #10b981;">
+                        <i class="bi bi-cart"></i>
+                    </div>
+                    <div>
+                        <div class="ch-title">Top Products Sales</div>
+                        <div class="ch-sub">Monthly performance</div>
                     </div>
                 </div>
             </div>
+            <div class="chart-body">
+                <div class="chart-canvas-wrap" style="height: 220px;">
+                    <canvas id="areaChart"></canvas>
+                </div>
+                <div class="d-flex flex-wrap gap-2 justify-content-center mt-3" style="max-width: 100%;">
 
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(59, 130, 246, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #3b82f6; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">T-Shirts</span>
+                    </span>
+
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(249, 115, 22, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #f97316; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Shirts</span>
+                    </span>
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(16, 185, 129, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #10b981; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Jackets</span>
+                    </span>
+
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(139, 92, 246, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #8b5cf6; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Jeans</span>
+                    </span>
+
+
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(236, 72, 153, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #ec4899; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Trousers</span>
+                    </span>
+
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(20, 184, 166, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #14b8a6; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Shorts</span>
+                    </span>
+
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(239, 68, 68, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #ef4444; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Sneakers</span>
+                    </span>
+
+                    <!-- 8. Leather Shoes -->
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(234, 179, 8, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #eab308; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Leather Shoes</span>
+                    </span>
+
+                    <!-- 9. Sandals -->
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(79, 70, 229, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #4f46e5; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Sandals</span>
+                    </span>
+
+                    <!-- 10. Bags & Acc -->
+                    <span class="badge-pill d-flex align-items-center gap-2" style="background: rgba(107, 114, 128, 0.15); padding: 5px 12px; border-radius: 50px;">
+                        <span class="badge-dot" style="background: #6b7280; width: 7px; height: 7px; border-radius: 50%;"></span>
+                        <span style="font-size: 11px; font-weight: 500; color: #ffffff; letter-spacing: 0.3px;">Bags & Acc</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             <hr class="section-divider">
 
 
@@ -643,8 +684,6 @@
                 <h4>Analytics</h4>
                 <p>Performance overview across all channels.</p>
             </div>
-
-
             <div class="row g-3 mb-4">
                 <div class="col-6 col-lg-3">
                     <div class="metric-card blue">
@@ -825,7 +864,6 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-
         const gridColor  = 'rgba(255,255,255,0.04)';
         const tickColor  = '#64748b';
         const baseOpts   = {
@@ -833,7 +871,6 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } }
         };
-
 
         new Chart(document.getElementById('donutChart'), {
             type: 'doughnut',
@@ -956,7 +993,7 @@
         new Chart(document.getElementById('locationChart'), {
             type: 'bar',
             data: {
-                labels: ['New York', 'Los Angeles', 'Dallas', 'Chicago', 'Miami'],
+                labels: ['Phnom Penh', 'Siem Reap', 'Sihanoukville', 'Battambang', 'Kampot'],
                 datasets: [{
                     label: 'Sales',
                     data: [45, 32, 28, 22, 18],
@@ -1005,7 +1042,7 @@
             }
         });
 
-        const sidebar       = document.getElementById('sidebar');
+        const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebarToggle');
 
         sidebarToggle?.addEventListener('click', () => {
@@ -1020,13 +1057,11 @@
             }
         });
 
-
         const logoutForm = document.createElement('form');
         logoutForm.method = 'POST';
         logoutForm.action = '{{ route("logout") }}';
         logoutForm.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
         document.body.appendChild(logoutForm);
-
         document.getElementById('confirmLogout')?.addEventListener('click', () => {
             logoutForm.submit();
         });

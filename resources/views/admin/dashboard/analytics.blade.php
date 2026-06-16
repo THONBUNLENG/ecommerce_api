@@ -189,7 +189,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('panel.dashboard.analytics') }}">
+                 <a class="nav-link active" href="#">
                     <i class="bi bi-graph-up"></i>
                     <span class="nav-text">Analytics</span>
                 </a>
@@ -422,7 +422,7 @@
                             beginAtZero: true,
                             grid: { color: 'rgba(255, 255, 255, 0.03)' },
                             ticks: { color: '#64748b', callback: v => '$' + v + 'k' }
-                        }
+                        }​
                     },
                     plugins: { legend: { display: false } }
                 }

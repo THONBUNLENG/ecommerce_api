@@ -18,7 +18,7 @@
                             </h4>
                             <ul class="footer-menu list-unstyled mb-0 d-md-block">
                                 <li class="footer-menu-item"><a href="{{ route('home') }}">Home</a></li>
-                                <li class="footer-menu-item"><a href="{{ route('view-products') }}">Shop</a></li>
+                                <li class="footer-menu-item"><a href="{{ route('featured-collection') }}">Shop</a></li>
                                 <li class="footer-menu-item"><a href="#">Blog</a></li>
                                 <li class="footer-menu-item"><a href="{{ route('about') }}">About Us</a></li>
                                 <li class="footer-menu-item"><a href="{{ route('contact') }}">Contact</a></li>
