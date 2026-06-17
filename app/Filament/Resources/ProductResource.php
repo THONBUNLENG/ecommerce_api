@@ -182,6 +182,24 @@ class ProductResource extends Resource
                                             ->maxLength(160),
                                     ]),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Media')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make('Product Images')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('images')
+                                            ->label('Images')
+                                            ->relationship('images')
+                                            ->multiple()
+                                            ->maxFiles(3)
+                                            ->directory('products')
+                                            ->disk('public')
+                                            ->image()
+                                            ->downloadable()
+                                            ->reorderable()
+                                            ->columnSpanFull(),
+                                    ]),
+                            ]),
                     ])
                     ->columnSpanFull()
             ]);

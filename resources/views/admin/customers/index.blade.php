@@ -386,84 +386,14 @@
             .search-wrap { flex: 1; }
         }
     </style>
+    @include('admin.partials.theme')
 </head>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-logo">
-                <i class="bi bi-layers text-white" style="font-size:.9rem;"></i>
-            </div>
-            <h5 class="nav-text">LOOMA</h5>
-        </div>
-
-        <div class="sidebar-nav">
-            <div class="nav-section nav-text">Main</div>
-
-            <a class="nav-link" href="{{ route('panel.dashboard') }}">
-                <i class="bi bi-speedometer2"></i>
-                <span class="nav-text">Dashboard</span>
-            </a>
-            <a class="nav-link" href="{{ route('panel.products.index') }}">
-                <i class="bi bi-box-seam"></i>
-                <span class="nav-text">Products</span>
-            </a>
-            <a class="nav-link" href="{{ route('panel.orders.index') }}">
-                <i class="bi bi-cart3"></i>
-                <span class="nav-text">Orders</span>
-            </a>
-            <a class="nav-link active" href="{{ route('panel.customers.index') }}">
-                <i class="bi bi-people"></i>
-                <span class="nav-text">Customers</span>
-            </a>
-
-            <div class="nav-section nav-text" style="margin-top:.75rem;">System</div>
-
-            <a class="nav-link" href="{{ route('panel.settings.index') }}">
-                <i class="bi bi-gear"></i>
-                <span class="nav-text">Settings</span>
-            </a>
-        </div>
-
-        <div class="sidebar-footer">
-            <a class="nav-link logout-link" href="#"
-               data-bs-toggle="modal" data-bs-target="#logoutModal"
-               style="color:var(--text-muted);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.875rem;font-weight:500;font-size:13.5px;border-left:3px solid transparent;transition:var(--transition);text-decoration:none;">
-                <i class="bi bi-box-arrow-right" style="font-size:1.15rem;width:20px;text-align:center;flex-shrink:0;"></i>
-                <span class="nav-text">Logout</span>
-            </a>
-        </div>
-    </nav>
+    @include('admin.partials.sidebar')
 
     <div class="main-content">
-        <div class="topbar">
-            <div class="d-flex align-items-center gap-3">
-                <button class="icon-btn d-lg-none border-0" id="sidebarToggle" aria-label="Toggle sidebar">
-                    <i class="bi bi-list"></i>
-                </button>
-                <div class="search-wrap">
-                    <i class="bi bi-search"></i>
-                    <input type="search" class="search-input" placeholder="Search customers…">
-                </div>
-            </div>
-            <div class="topbar-actions">
-                <a class="icon-btn" title="Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notif-dot"></span>
-                </a>
-                <div class="dropdown">
-                    <div class="avatar-btn" data-bs-toggle="dropdown" aria-expanded="false" role="button" aria-label="User menu">
-                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff" alt="Admin">
-                    </div>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ route('profile.show') }}"><i class="bi bi-person me-2"></i>Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('panel.settings.index') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item logout-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @include('admin.partials.topbar', ['searchPlaceholder' => 'Search customers…'])
 
         <div class="content">
             <div class="page-header">
@@ -537,24 +467,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="logoutModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <h6 class="modal-title">Confirm logout</h6>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">Are you sure you want to log out of your session?</div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"
-                            style="border-radius:8px;border-color:var(--border);color:var(--text-muted);">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-danger" id="confirmLogout" style="border-radius:8px;">Log out</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @include('admin.partials.logout')
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const sidebar = document.getElementById('sidebar');
@@ -569,21 +483,6 @@
                 sidebar.classList.remove('show');
             }
         });
-
-        const logoutForm = document.createElement('form');
-        logoutForm.method = 'POST';
-        logoutForm.action = '{{ route("logout") }}';
-        logoutForm.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
-        document.body.appendChild(logoutForm);
-
-        document.querySelectorAll('.logout-link').forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                new bootstrap.Modal(document.getElementById('logoutModal')).show();
-            });
-        });
-
-        document.getElementById('confirmLogout')?.addEventListener('click', () => logoutForm.submit());
     });
     </script>
 </body>

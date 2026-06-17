@@ -33,11 +33,26 @@ class Product extends Model
         'meta_description',
         'sizes',
         'colors',
+        'weight',
+        'dim_l',
+        'dim_w',
+        'dim_h',
+        'manufacturer',
+        'drop_shipper',
+        'extended_specs',
+        'search_words',
+        'waist_sizes',
+        'is_recommended',
+        'gift_wrap',
+        'back_order',
+        'custom_1',
+        'custom_2',
     ];
 
     protected $casts = [
         'sizes' => 'array',
         'colors' => 'array',
+        'waist_sizes' => 'array',
     ];
 
     public function category()

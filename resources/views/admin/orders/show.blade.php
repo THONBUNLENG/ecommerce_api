@@ -35,6 +35,8 @@
             z-index: 1000;
             padding: 1.5rem 0;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-brand {
@@ -46,6 +48,26 @@
             font-weight: 700;
             color: #fff;
             margin: 0;
+        }
+
+        .sidebar-brand h5 {
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 10px;
         }
 
         .sidebar-nav {
@@ -63,6 +85,16 @@
             font-weight: 500;
         }
 
+        .nav-section {
+            padding: 0.25rem 1.5rem 0.5rem;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
         .sidebar-nav .nav-link:hover,
         .sidebar-nav .nav-link.active {
             background: rgba(59, 130, 246, 0.1);
@@ -74,6 +106,12 @@
             font-size: 1.25rem;
             width: 24px;
             text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
         }
 
         .main-content {
@@ -111,6 +149,85 @@
             color: #fff;
         }
 
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.875rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 0 0 260px;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: .75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: .9rem;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: .45rem 1rem .45rem 2.25rem;
+            color: #fff;
+            font-size: 13px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+        .search-input:focus {
+            border-color: rgba(0, 102, 255, 0.5);
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: .875rem;
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 7px;
+            height: 7px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 1.5px solid #0f172a;
+        }
+
+        .avatar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid rgba(0, 102, 255, 0.4);
+        }
+
+        .avatar-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .content-wrapper {
             padding: 2rem;
         }
@@ -139,77 +256,13 @@
             .sidebar.show { transform: translateX(0); }
         }
     </style>
+    @include('admin.partials.theme')
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="sidebar-brand d-flex align-items-center">
-            <h4 class="sidebar-brand-text">LOOMA Admin</h4>
-        </div>
-        <ul class="nav flex-column sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('panel.dashboard') }}">
-                    <i class="bi bi-speedometer2"></i>
-                    <span class="nav-text">Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('panel.products.index') }}">
-                    <i class="bi bi-box-seam"></i>
-                    <span class="nav-text">Products</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ route('panel.orders.index') }}">
-                    <i class="bi bi-cart"></i>
-                    <span class="nav-text">Orders</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('panel.customers.index') }}">
-                    <i class="bi bi-people"></i>
-                    <span class="nav-text">Customers</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('panel.settings.index') }}">
-                    <i class="bi bi-gear"></i>
-                    <span class="nav-text">Settings</span>
-                </a>
-            </li>
-            <li class="nav-item mt-auto">
-                <a class="nav-link logout-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span class="nav-text">Logout</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    @include('admin.partials.sidebar')
 
     <div class="main-content">
-        <nav class="navbar d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-3">
-                <button class="btn d-lg-none" id="sidebarToggle">
-                    <i class="bi bi-list nav-icon"></i>
-                </button>
-                <div class="position-relative">
-                    <input type="search" class="search-bar" placeholder="Search...">
-                </div>
-            </div>
-            <div class="d-flex align-items-center gap-4">
-                <i class="bi bi-bell nav-icon"></i>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff&rounded=true" alt="Avatar" width="36" height="36" class="rounded-circle">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('panel.settings.index') }}">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item logout-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @include('admin.partials.topbar')
 
         <div class="content-wrapper">
             <div class="admin-card mb-4 p-4 d-flex justify-content-between align-items-center">
@@ -290,50 +343,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="logoutModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm Logout</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to logout?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmLogout">Logout</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @include('admin.partials.logout')
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         sidebarToggle?.addEventListener('click', function() {
             sidebar.classList.toggle('show');
-        });
-
-        const logoutModal = document.getElementById('logoutModal');
-        const logoutForm = document.createElement('form');
-        logoutForm.id = 'logout-form-dynamic';
-        logoutForm.method = 'POST';
-        logoutForm.action = '{{ route('logout') }}';
-        logoutForm.innerHTML = '<input type="hidden" name="_token" value="' + document.querySelector('meta[name="csrf-token"]').getAttribute('content') + '">';
-        document.body.appendChild(logoutForm);
-
-        document.querySelectorAll('.logout-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const modal = new bootstrap.Modal(logoutModal);
-                modal.show();
-            });
-        });
-
-        document.getElementById('confirmLogout').addEventListener('click', function() {
-            document.getElementById('logout-form-dynamic').submit();
         });
     </script>
 </body>

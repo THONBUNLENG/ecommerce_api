@@ -79,7 +79,6 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'nullable|string|max:100|unique:products,sku',
             'category_id' => 'required|exists:categories,id',
-            'manufacturer' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'original_price' => 'nullable|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0',
@@ -94,9 +93,11 @@ class AdminProductController extends Controller
             'meta_title' => 'nullable|string|max:60',
             'meta_description' => 'nullable|string|max:160',
             'extended_specs' => 'nullable|string',
-            'images' => 'nullable|array|max:4',
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'exemptions' => 'nullable|array',
+            'search_words' => 'nullable|string|max:255',
+            'custom_1' => 'nullable|string|max:255',
+            'custom_2' => 'nullable|string|max:255',
+            'manufacturer' => 'nullable|string|max:255',
+            'drop_shipper' => 'nullable|string|max:255',
             'sizes' => 'nullable|array',
             'sizes.*' => 'string',
             'waist_sizes' => 'nullable|array',
@@ -105,10 +106,15 @@ class AdminProductController extends Controller
             'colors.*' => 'string',
             'is_popular' => 'boolean',
             'is_latest_drop' => 'boolean',
+            'is_recommended' => 'boolean',
+            'gift_wrap' => 'boolean',
+            'back_order' => 'boolean',
             'tier_qty' => 'nullable|array',
             'tier_price' => 'nullable|array',
+            'images' => 'nullable|array|max:3',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-        $validated['stock_status'] = $request->input('stock_quantity') > 0 ? 'in_stock' : 'out_of_stock';
+        $stockStatus = $validated['stock_status'] ?? ($validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock');
 
         $productData = [
             'name' => $validated['name'],
@@ -121,14 +127,28 @@ class AdminProductController extends Controller
             'discount_price' => $validated['discount_price'],
             'category_id' => $validated['category_id'],
             'stock_quantity' => $validated['stock_quantity'],
-            'stock_status' => $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock',
+            'stock_status' => $stockStatus,
             'user_id' => auth()->id(),
             'is_popular' => $request->boolean('is_popular', false),
             'is_latest_drop' => $request->boolean('is_latest_drop', false),
             'is_active' => $request->boolean('is_active', true),
+            'is_recommended' => $request->boolean('is_recommended', false),
+            'gift_wrap' => $request->boolean('gift_wrap', false),
+            'back_order' => $request->boolean('back_order', false),
             'meta_title' => $validated['meta_title'],
             'meta_description' => $validated['meta_description'],
+            'extended_specs' => $validated['extended_specs'],
+            'search_words' => $validated['search_words'],
+            'custom_1' => $validated['custom_1'],
+            'custom_2' => $validated['custom_2'],
+            'weight' => $validated['weight'],
+            'dim_l' => $validated['dim_l'],
+            'dim_w' => $validated['dim_w'],
+            'dim_h' => $validated['dim_h'],
+            'manufacturer' => $validated['manufacturer'],
+            'drop_shipper' => $validated['drop_shipper'],
             'sizes' => $validated['sizes'] ?? [],
+            'waist_sizes' => $validated['waist_sizes'] ?? [],
             'colors' => $validated['colors'] ?? [],
         ];
 
@@ -167,12 +187,12 @@ class AdminProductController extends Controller
         $response['images_count'] = $images->count();
         $response['images_meta_string'] = $images->map(fn ($img) => basename($img->image_path))->join(', ');
 
-        // Ensure explicit structure synchronization with Blade Form Field mappings
         $response['is_active'] = (bool) $product->is_active;
-        $response['is_featured'] = (bool) $product->is_featured;
-        $response['free_shipping'] = (bool) $product->free_shipping;
-        $response['b2b_only'] = (bool) $product->b2b_only;
-        $response['pre_order'] = (bool) $product->pre_order;
+        $response['is_popular'] = (bool) $product->is_popular;
+        $response['is_latest_drop'] = (bool) $product->is_latest_drop;
+        $response['is_recommended'] = (bool) ($product->is_recommended ?? false);
+        $response['gift_wrap'] = (bool) ($product->gift_wrap ?? false);
+        $response['back_order'] = (bool) ($product->back_order ?? false);
 
         return response()->json($response);
     }
@@ -200,10 +220,10 @@ class AdminProductController extends Controller
             'meta_title' => 'nullable|string|max:60',
             'meta_description' => 'nullable|string|max:160',
             'extended_specs' => 'nullable|string',
-            'images' => 'nullable|array|max:4',
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-
-            'exemptions' => 'nullable|array',
+            'search_words' => 'nullable|string|max:255',
+            'custom_1' => 'nullable|string|max:255',
+            'custom_2' => 'nullable|string|max:255',
+            'drop_shipper' => 'nullable|string|max:255',
             'sizes' => 'nullable|array',
             'sizes.*' => 'string',
             'waist_sizes' => 'nullable|array',
@@ -212,11 +232,16 @@ class AdminProductController extends Controller
             'colors.*' => 'string',
             'is_popular' => 'boolean',
             'is_latest_drop' => 'boolean',
+            'is_recommended' => 'boolean',
+            'gift_wrap' => 'boolean',
+            'back_order' => 'boolean',
             'tier_qty' => 'nullable|array',
             'tier_price' => 'nullable|array',
+            'images' => 'nullable|array|max:3',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $validated['stock_status'] = $request->input('stock_quantity') > 0 ? 'in_stock' : 'out_of_stock';
+        $stockStatus = $validated['stock_status'] ?? ($validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock');
 
         $productData = [
             'name' => $validated['name'],
@@ -229,13 +254,27 @@ class AdminProductController extends Controller
             'discount_price' => $validated['discount_price'],
             'category_id' => $validated['category_id'],
             'stock_quantity' => $validated['stock_quantity'],
-            'stock_status' => $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock',
+            'stock_status' => $stockStatus,
             'is_popular' => $request->boolean('is_popular', $product->is_popular),
             'is_latest_drop' => $request->boolean('is_latest_drop', $product->is_latest_drop),
             'is_active' => $request->boolean('is_active', $product->is_active),
+            'is_recommended' => $request->boolean('is_recommended', $product->is_recommended ?? false),
+            'gift_wrap' => $request->boolean('gift_wrap', $product->gift_wrap ?? false),
+            'back_order' => $request->boolean('back_order', $product->back_order ?? false),
             'meta_title' => $validated['meta_title'],
             'meta_description' => $validated['meta_description'],
+            'extended_specs' => $validated['extended_specs'],
+            'search_words' => $validated['search_words'],
+            'custom_1' => $validated['custom_1'],
+            'custom_2' => $validated['custom_2'],
+            'weight' => $validated['weight'],
+            'dim_l' => $validated['dim_l'],
+            'dim_w' => $validated['dim_w'],
+            'dim_h' => $validated['dim_h'],
+            'manufacturer' => $validated['manufacturer'],
+            'drop_shipper' => $validated['drop_shipper'],
             'sizes' => $validated['sizes'] ?? [],
+            'waist_sizes' => $validated['waist_sizes'] ?? [],
             'colors' => $validated['colors'] ?? [],
         ];
 
