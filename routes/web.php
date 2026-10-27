@@ -11,7 +11,11 @@ use App\Http\Controllers\WishlistController;
 
 
 
-Route::get('/',HomeController::class)->name('home');
+Route::view('/', 'storefront')->name('home');
+Route::redirect('/login.html', '/login');
+Route::get('/kh/en-gb/women', [CategoryPageController::class, 'women'])->name('women');
+Route::redirect('/women', '/kh/en-gb/women');
+Route::view('/shop', 'shop')->name('shop');
 Route::get('/featured-collection', FeaturedCollectionController::class)->name('featured-collection');
 Route::get('/category-pages-with-left-sidebar/{category?}', [CategoryPageController::class, 'index'])->name('category-pages.left-sidebar');
 Route::get('/category-pages-with-right-sidebar/{category?}', [CategoryPageController::class, 'rightSidebar'])->name('category-pages.right-sidebar');

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -21,6 +24,7 @@ class Product extends Model
         'price',
         'original_price',
         'discount_price',
+        'base_price',
         'category_id',
         'stock_quantity',
         'stock_status',
@@ -29,6 +33,7 @@ class Product extends Model
         'is_popular',
         'is_latest_drop',
         'is_active',
+        'is_featured',
         'meta_title',
         'meta_description',
         'sizes',
@@ -50,33 +55,46 @@ class Product extends Model
     ];
 
     protected $casts = [
+        'base_price' => 'decimal:2',
+        'is_active' => 'boolean',
+        'is_featured' => 'boolean',
         'sizes' => 'array',
         'colors' => 'array',
         'waist_sizes' => 'array',
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function orderDetails()
+    public function orderDetails(): HasMany
     {
         return $this->hasMany(OrderDetail::class);
     }
 
 
-    public function variations()
+    public function variations(): HasMany
     {
         return $this->hasMany(ProductVariation::class);
     }
 
-    public function images()
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    public function orderItems(): HasManyThrough
+    {
+        return $this->hasManyThrough(OrderItem::class, ProductVariant::class);
+    }
+
+    public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }

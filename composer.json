@@ -12,6 +12,7 @@
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "3",
+        "intervention/image-laravel": "^1.2",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.2",
         "laravel/sanctum": "^3.3",

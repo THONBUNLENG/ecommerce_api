@@ -8,6 +8,38 @@ use Illuminate\Http\Request;
 
 class CategoryPageController extends Controller
 {
+    public function women(Request $request)
+    {
+        $categories = Category::withCount([
+            'products' => function ($query) {
+                $query->where('is_active', true);
+            },
+        ])->orderBy('name')->get();
+
+        $selectedCategory = $request->filled('category')
+            ? Category::findOrFail($request->integer('category'))
+            : null;
+
+        $query = Product::query()
+            ->where('is_active', true)
+            ->with('category');
+
+        if ($selectedCategory) {
+            $query->where('category_id', $selectedCategory->id);
+        }
+
+        match ($request->query('sort')) {
+            'price-asc' => $query->orderBy('price'),
+            'price-desc' => $query->orderByDesc('price'),
+            'name' => $query->orderBy('name'),
+            default => $query->orderByDesc('created_at'),
+        };
+
+        $products = $query->paginate(16)->withQueryString();
+
+        return view('category-pages.women', compact('categories', 'products', 'selectedCategory'));
+    }
+
     public function index(Request $request, $categoryId = null)
     {
         return $this->renderCategoryPage('category-pages.left-sidebar', $categoryId);
